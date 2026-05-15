@@ -1,0 +1,74 @@
+import java.util.Scanner;
+
+public class UserInputHandler {
+    public static void main(String[] args) {
+
+        Scanner in = new Scanner(System.in);
+
+        while (in.hasNextLine()) {
+            String line = in.nextLine();
+            String[] input = line.split(" ");
+
+            switch (input[0]) {
+                case "importClasses":
+                    break;
+
+                case "browseClasses":
+                    break;
+
+                case "viewClasses":
+                    break;
+
+                case "searchClasses":
+                    break;
+
+                case "editClasses":
+                    break;
+
+                case "deleteClasses":
+                    break;
+
+                case "generateTimetable":
+                    break;
+
+                case "browseTimetable":
+                    break;
+
+                case "viewTimetable":
+                    break;
+
+                case "searchTimetable":
+                    break;
+
+                case "editTimetable":
+                    break;
+
+                case "deleteTimetable":
+                    break;
+
+                case "exportTimetable":
+                    break;
+
+                case "help":
+                    if (input.length == 2) {
+                        Application.help(input[1]);
+                    } else if (input.length == 1){
+                        Application.help();
+                    } else {
+                        System.out.println("You have entered too many arguments to the help command. \nUse help help if you don't know the syntax for the help command.");
+                    }
+                    break;
+
+                case "exit":
+                    Application.exit();
+                    break;
+
+                default:
+                    System.out.println("Error: command typed does not exist. Use the help command to get the list of commands expected by the system. \n" +
+                            "You can also use it to find out the specific syntax of a command by using that command as an argument (help help).");
+            }
+        }
+
+
+    }
+}
