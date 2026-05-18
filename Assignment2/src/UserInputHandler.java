@@ -11,9 +11,17 @@ public class UserInputHandler {
 
             switch (input[0]) {
                 case "importClasses":
+                    if (line.length() > "importClasses".length()) {
+                        String filePath = line.substring("importClasses".length()).trim();
+                        Application.importClasses(filePath);
+                    } else {
+                        System.out.println("Error: importClasses requires a CSV file path.");
+                        System.out.println("Syntax: importClasses path/to/classes.csv");
+                    }
                     break;
 
                 case "browseClasses":
+                    Application.browseClasses();
                     break;
 
                 case "viewClasses":

@@ -1,5 +1,8 @@
-import java.sql.SQLOutput;
 import java.util.ArrayList;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.LinkedHashSet;
 
 public class Application {
     /*
@@ -23,10 +26,181 @@ public class Application {
             "browseTimetables", "viewTimetables", "searchTimetables", "editTimetable", "deleteTimetable", "exportTimetable", "help", "exit"};
 
 
-    public void importClasses() {}
+    public static void importClasses(String filePath) {
+        int newRecords = 0;
+        int updatedRecords = 0;
 
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line = reader.readLine();
 
-    public void browseClasses() {}
+            if (line == null) {
+                System.out.println("Error: CSV file is empty.");
+                return;
+            }
+
+            ArrayList<String> header = parseCsvLine(line);
+
+            if (header.size() != 8) {
+                System.out.println("Error: CSV file is not in the correct format.");
+                return;
+            }
+
+            while ((line = reader.readLine()) != null) {
+                if (line.trim().isEmpty()) {
+                    continue;
+                }
+
+                ArrayList<String> row = parseCsvLine(line);
+
+                if (row.size() != 8) {
+                    System.out.println("Error: CSV file is not in the correct format.");
+                    return;
+                }
+
+                String topic = row.get(0);
+                String availability = row.get(1);
+                String classFormat = row.get(2);
+                String classInstance = row.get(3);
+                String date = row.get(4);
+                String day = row.get(5);
+                String time = row.get(6);
+                String location = row.get(7);
+
+                boolean updated = false;
+
+                for (ArrayList existingClass : classes) {
+                    boolean sameRecord =
+                            existingClass.get(1).equals(topic) &&
+                                    existingClass.get(2).equals(availability) &&
+                                    existingClass.get(3).equals(classFormat) &&
+                                    existingClass.get(4).equals(classInstance) &&
+                                    existingClass.get(5).equals(date) &&
+                                    existingClass.get(6).equals(day);
+
+                    if (sameRecord) {
+                        existingClass.set(7, time);
+                        existingClass.set(8, location);
+                        updatedRecords++;
+                        updated = true;
+                        break;
+                    }
+                }
+
+                if (!updated) {
+                    ArrayList<String> newClass = new ArrayList<>();
+
+                    newClass.add(String.valueOf(classes.size() + 1)); // sessionID
+                    newClass.add(topic);
+                    newClass.add(availability);
+                    newClass.add(classFormat);
+                    newClass.add(classInstance);
+                    newClass.add(date);
+                    newClass.add(day);
+                    newClass.add(time);
+                    newClass.add(location);
+
+                    classes.add(newClass);
+                    newRecords++;
+                }
+            }
+
+            System.out.println("_________________________________________");
+            System.out.println("Import completed successfully.");
+            System.out.println("New records imported: " + newRecords);
+            System.out.println("Existing records updated: " + updatedRecords);
+            System.out.println("Total class records stored: " + classes.size());
+            System.out.println("_________________________________________");
+
+        } catch (IOException e) {
+            System.out.println("Error: Could not read the CSV file.");
+            System.out.println("Check that the file path is correct and try again.");
+        }
+    }
+
+    private static ArrayList<String> parseCsvLine(String line) {
+        ArrayList<String> values = new ArrayList<>();
+        StringBuilder currentValue = new StringBuilder();
+        boolean insideQuotes = false;
+
+        for (int i = 0; i < line.length(); i++) {
+            char currentChar = line.charAt(i);
+
+            if (currentChar == '"') {
+                insideQuotes = !insideQuotes;
+            } else if (currentChar == ',' && !insideQuotes) {
+                values.add(currentValue.toString().trim());
+                currentValue.setLength(0);
+            } else {
+                currentValue.append(currentChar);
+            }
+        }
+
+        values.add(currentValue.toString().trim());
+        return values;
+    }
+
+    public static void browseClasses() {
+        if (classes.isEmpty()) {
+            System.out.println("No classes have been imported yet.");
+            return;
+        }
+
+        LinkedHashSet<String> displayedClasses = new LinkedHashSet<>();
+
+        System.out.println("_________________________________________");
+        System.out.println("BROWSE CLASSES");
+        System.out.println("_________________________________________");
+
+        for (ArrayList classRecord : classes) {
+            String topic = classRecord.get(1).toString();
+            String availability = classRecord.get(2).toString();
+            String classFormat = classRecord.get(3).toString();
+            String classInstance = classRecord.get(4).toString();
+
+            String topicCode = getTopicCode(topic);
+            String topicName = getTopicName(topic);
+
+            String[] availabilityParts = availability.split(" - ");
+
+            String attendanceMode = availabilityParts.length > 0 ? availabilityParts[0] : "";
+            String campus = availabilityParts.length > 1 ? availabilityParts[1] : "";
+            String semester = availabilityParts.length > 2 ? availabilityParts[2] : "";
+            String availabilityNumber = availabilityParts.length > 3 ? availabilityParts[3] : "";
+
+            String uniqueClassKey = topicCode + "|" + topicName + "|" + attendanceMode + "|" + campus + "|"
+                    + semester + "|" + availabilityNumber + "|" + classFormat + "|" + classInstance;
+
+            if (displayedClasses.add(uniqueClassKey)) {
+                System.out.println("Topic code: " + topicCode);
+                System.out.println("Topic name: " + topicName);
+                System.out.println("Attendance mode: " + attendanceMode);
+                System.out.println("Campus: " + campus);
+                System.out.println("Semester: " + semester);
+                System.out.println("Availability number: " + availabilityNumber);
+                System.out.println("Class: " + classFormat);
+                System.out.println("Class instance: " + classInstance);
+                System.out.println("-----------------------------------------");
+            }
+        }
+
+        System.out.println("Total unique classes: " + displayedClasses.size());
+        System.out.println("_________________________________________");
+    }
+
+    private static String getTopicCode(String topic) {
+        String[] topicParts = topic.split(" ", 2);
+        return topicParts[0];
+    }
+
+    private static String getTopicName(String topic) {
+        String[] topicParts = topic.split(" ", 2);
+
+        if (topicParts.length > 1) {
+            return topicParts[1];
+        }
+
+        return "";
+    }
 
 
     public void viewClasses() {}
@@ -85,7 +259,8 @@ public class Application {
 
         switch (command) {
             case "importClasses":
-                System.out.println("Help feature for this command currently isn't implemented.");
+                System.out.println("Definition: A command that imports classes from a given CSV file, printing out new records imported, existing records updated and total records stored.");
+                System.out.println("Syntax: |importClasses|filePath|.");
                 break;
 
             case "browseClasses":
