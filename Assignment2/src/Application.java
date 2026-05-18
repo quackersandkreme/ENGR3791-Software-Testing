@@ -1,37 +1,64 @@
 import java.sql.SQLOutput;
+import java.util.ArrayList;
 
 public class Application {
     /*
     * Class that contains all functions of the program
     */
 
-    private static String[] commands = {"importClasses", "browseClasses", "viewClasses", "searchClasses", "editClasses", "deleteClasses", "generateTimetable",
+    /**
+    * The list of classes, that are themselves lists. They (classes) contain sessionID, topicID, availability, class, class instance, date, day, time, location.
+    */
+    private static ArrayList<ArrayList> classes = new ArrayList<>();
+
+    /**
+     * The list of timetables, that are themselves lists. They (timetables) contain every sessionID of the classes they are in.
+     */
+    private static ArrayList<ArrayList> timetables = new ArrayList<>();
+
+    /**
+     * Just a list of every command we currently have in our program. Implemented as a variable in case any other program other than help wants to use it.
+     */
+    private static final String[] commands = {"importClasses", "browseClasses", "viewClasses", "searchClasses", "editClasses", "deleteClasses", "generateTimetable",
             "browseTimetables", "viewTimetables", "searchTimetables", "editTimetable", "deleteTimetable", "exportTimetable", "help", "exit"};
+
 
     public void importClasses() {}
 
+
     public void browseClasses() {}
+
 
     public void viewClasses() {}
 
+
     public void searchClasses() {}
+
 
     public void editClasses() {}
 
+
     public void deleteClasses() {}
+
 
     public void generateTimetable() {}
 
+
     public void browseTimetables() {}
+
 
     public void viewTimetable() {}
 
+
     public void searchTimetables() {}
+
 
     public void editTimetable() {}
 
+
     public void deleteTimetable() {}
 
+    
     public void exportTimetable() {}
 
     /**
