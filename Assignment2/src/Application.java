@@ -25,7 +25,10 @@ public class Application {
     private static final String[] commands = {"importClasses", "browseClasses", "viewClasses", "searchClasses", "editClasses", "deleteClasses", "generateTimetable",
             "browseTimetables", "viewTimetables", "searchTimetables", "editTimetable", "deleteTimetable", "exportTimetable", "help", "exit"};
 
-
+    /**
+     * Takes a given file path to a CSV file and imports all the classes contained in it.
+     * @param filePath
+     */
     public static void importClasses(String filePath) {
         int newRecords = 0;
         int updatedRecords = 0;
@@ -117,6 +120,11 @@ public class Application {
         }
     }
 
+    /**
+     * Parses a single csv line and returns its individual values.
+     * @param line
+     * @return values of one CSV line
+     */
     private static ArrayList<String> parseCsvLine(String line) {
         ArrayList<String> values = new ArrayList<>();
         StringBuilder currentValue = new StringBuilder();
@@ -139,6 +147,9 @@ public class Application {
         return values;
     }
 
+    /**
+     * Prints out the list of all unique classes, formatted topicCode campus semester class classInstance.
+     */
     public static void browseClasses() {
         if (classes.isEmpty()) {
             System.out.println("No classes have been imported yet.");
@@ -150,6 +161,7 @@ public class Application {
         System.out.println("_________________________________________");
         System.out.println("BROWSE CLASSES");
         System.out.println("_________________________________________");
+        System.out.println("TopicCode Campus Semester Class Class Instance");
 
         for (ArrayList classRecord : classes) {
             String topic = classRecord.get(1).toString();
@@ -158,28 +170,16 @@ public class Application {
             String classInstance = classRecord.get(4).toString();
 
             String topicCode = getTopicCode(topic);
-            String topicName = getTopicName(topic);
 
             String[] availabilityParts = availability.split(" - ");
 
-            String attendanceMode = availabilityParts.length > 0 ? availabilityParts[0] : "";
             String campus = availabilityParts.length > 1 ? availabilityParts[1] : "";
             String semester = availabilityParts.length > 2 ? availabilityParts[2] : "";
-            String availabilityNumber = availabilityParts.length > 3 ? availabilityParts[3] : "";
 
-            String uniqueClassKey = topicCode + "|" + topicName + "|" + attendanceMode + "|" + campus + "|"
-                    + semester + "|" + availabilityNumber + "|" + classFormat + "|" + classInstance;
+            String uniqueClassKey = topicCode + "|" + campus + "|" + semester + "|" + classFormat + "|" + classInstance;
 
             if (displayedClasses.add(uniqueClassKey)) {
-                System.out.println("Topic code: " + topicCode);
-                System.out.println("Topic name: " + topicName);
-                System.out.println("Attendance mode: " + attendanceMode);
-                System.out.println("Campus: " + campus);
-                System.out.println("Semester: " + semester);
-                System.out.println("Availability number: " + availabilityNumber);
-                System.out.println("Class: " + classFormat);
-                System.out.println("Class instance: " + classInstance);
-                System.out.println("-----------------------------------------");
+                System.out.println(topicCode + " " + campus + " " + semester + " " + classFormat + " " + classInstance);
             }
         }
 
@@ -187,19 +187,14 @@ public class Application {
         System.out.println("_________________________________________");
     }
 
+    /**
+     * Returns the topic code of a given topic.
+     * @param topic
+     * @return topic code
+     */
     private static String getTopicCode(String topic) {
         String[] topicParts = topic.split(" ", 2);
         return topicParts[0];
-    }
-
-    private static String getTopicName(String topic) {
-        String[] topicParts = topic.split(" ", 2);
-
-        if (topicParts.length > 1) {
-            return topicParts[1];
-        }
-
-        return "";
     }
 
 
@@ -264,7 +259,8 @@ public class Application {
                 break;
 
             case "browseClasses":
-                System.out.println("Help feature for this command currently isn't implemented.");
+                System.out.println("Definition: A command that prints out a list of all unique classes currently held within the program.");
+                System.out.println("Syntax: |browseClasses|.");
                 break;
 
             case "viewClasses":
