@@ -1138,12 +1138,94 @@ public class Application {
 
     public static void searchTimetables() {}
 
-
     public static void editTimetables() {}
 
+    public static void deleteTimetables() {
+        if (timetables.isEmpty()) {
+            System.out.println("No timetables have been generated yet.");
+            return;
+        }
 
-    public static void deleteTimetables() {}
+        System.out.println("_________________________________________");
+        System.out.println("DELETE TIMETABLE");
+        System.out.println("_________________________________________");
 
+        // Display all timetables
+        System.out.printf("%-6s %-10s %-30s%n", "ID", "Classes", "Class IDs");
+        System.out.println("_________________________________________");
+
+        for (ArrayList<String> timetable : timetables) {
+            String id = timetable.getFirst();
+
+            StringBuilder classIDs = new StringBuilder();
+            for (int i = 1; i < timetable.size(); i++) {
+                if (i > 1) classIDs.append(", ");
+                classIDs.append(timetable.get(i));
+            }
+
+            System.out.printf("%-6s %-10s %-30s%n",
+                    id,
+                    timetable.size() - 1,
+                    classIDs);
+        }
+
+        System.out.println("_________________________________________");
+        System.out.print("Enter the ID of the timetable to delete: ");
+        String idInput = scanner.nextLine().trim();
+
+        ArrayList<String> selectedTimetable = null;
+        int selectedIndex = -1;
+
+        for (int i = 0; i < timetables.size(); i++) {
+            ArrayList<String> timetable = timetables.get(i);
+            if (timetable.getFirst().equals(idInput)) {
+                selectedTimetable = timetable;
+                selectedIndex = i;
+                break;
+            }
+        }
+
+        if (selectedTimetable == null) {
+            System.out.println("Error: Timetable with ID " + idInput + " not found.");
+            System.out.println("_________________________________________");
+            return;
+        }
+
+        // Display full timetable details for confirmation
+        System.out.println("_________________________________________");
+        System.out.println("CONFIRM DELETION - TIMETABLE DETAILS");
+        System.out.println("_________________________________________");
+        System.out.println("Timetable ID: " + selectedTimetable.getFirst());
+        System.out.println("Number of classes: " + (selectedTimetable.size() - 1));
+
+        System.out.print("Class IDs: ");
+        for (int i = 1; i < selectedTimetable.size(); i++) {
+            System.out.print(selectedTimetable.get(i));
+            if (i < selectedTimetable.size() - 1) {
+                System.out.print(", ");
+            }
+        }
+        System.out.println();
+
+        System.out.println("_________________________________________");
+        System.out.println("WARNING: This action cannot be undone.");
+        System.out.print("Are you sure you want to delete this timetable? (yes/no): ");
+
+        String confirmation = scanner.nextLine().trim().toLowerCase();
+
+        if (confirmation.equals("yes")) {
+            timetables.remove(selectedIndex);
+
+            System.out.println("_________________________________________");
+            System.out.println("Timetable deleted successfully.");
+            System.out.println("Record removed from data structure.");
+            System.out.println("Total timetables remaining: " + timetables.size());
+            System.out.println("_________________________________________");
+        } else {
+            System.out.println("Deletion cancelled. Timetable remains intact.");
+            System.out.println("_________________________________________");
+        }
+    }
 
     public static void exportTimetables() {}
 
