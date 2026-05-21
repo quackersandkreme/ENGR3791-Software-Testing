@@ -948,7 +948,35 @@ public class Application {
         return str;
     }
 
-    public static void browseTimetables() {}
+    /**
+     * Prints out the list of all saved timetables without duplicates,
+     * formatted as TimetableID Classes.
+     */
+    public static void browseTimetables() {
+        if (timetables.isEmpty()) {
+            System.out.println("No timetables have been generated yet.");
+            return;
+        }
+
+        LinkedHashSet<String> displayedTimetables = new LinkedHashSet<>();
+
+        System.out.println("_________________________________________");
+        System.out.println("BROWSE TIMETABLES");
+        System.out.println("_________________________________________");
+        System.out.println("Timetable ID  Classes");
+
+        for (ArrayList timetable : timetables) {
+            String timetableID = timetable.get(0).toString();
+            int classCount = timetable.size() - 1;
+
+            if (displayedTimetables.add(timetableID)) {
+                System.out.println(timetableID + "             " + classCount);
+            }
+        }
+
+        System.out.println("Total unique timetables: " + displayedTimetables.size());
+        System.out.println("_________________________________________");
+    }
 
 
     public static void viewTimetables() {}
