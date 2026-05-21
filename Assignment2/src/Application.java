@@ -1076,7 +1076,6 @@ public class Application {
         }
         System.out.println("_________________________________________");
     }
-
     /**
      * Exits the program after sending a confirmation message to the user.
      *

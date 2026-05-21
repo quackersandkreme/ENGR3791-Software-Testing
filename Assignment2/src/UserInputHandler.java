@@ -81,7 +81,5 @@ public class UserInputHandler {
                             "You can also use it to find out the specific syntax of a command by using that command as an argument (help help).");
             }
         }
-
-
     }
 }
