@@ -992,7 +992,148 @@ public class Application {
     }
 
 
-    public static void viewTimetables() {}
+    public static void viewTimetables() {
+        if (timetables.isEmpty()) {
+            System.out.println("No timetables have been generated yet.");
+            return;
+        }
+
+        System.out.println("_________________________________________");
+        System.out.println("VIEW TIMETABLES");
+        System.out.println("_________________________________________");
+
+        // Show available timetables
+        System.out.printf("%-6s %-10s %-30s%n", "ID", "Classes", "Class IDs");
+        System.out.println("_________________________________________");
+
+        for (ArrayList<String> timetable : timetables) {
+            String id = timetable.getFirst();
+            System.out.printf("%-6s %-10s %-30s%n",
+                    id,
+                    timetable.size() - 1,
+                    timetable.subList(1, timetable.size()));
+        }
+
+        System.out.println("_________________________________________");
+        System.out.print("Enter Timetable ID to view: ");
+        String inputId = scanner.nextLine().trim();
+
+        ArrayList<String> selectedTimetable = null;
+
+        for (ArrayList<String> t : timetables) {
+            if (t.getFirst().equals(inputId)) {
+                selectedTimetable = t;
+                break;
+            }
+        }
+
+        if (selectedTimetable == null) {
+            System.out.println("Error: Timetable not found.");
+            return;
+        }
+
+        // Build class list from session IDs
+        ArrayList<ArrayList<String>> selectedClasses = new ArrayList<>();
+
+        for (int i = 1; i < selectedTimetable.size(); i++) {
+            String sessionId = selectedTimetable.get(i);
+
+            for (ArrayList<String> classRecord : classes) {
+                if (classRecord.getFirst().equals(sessionId)) {
+                    selectedClasses.add(classRecord);
+                    break;
+                }
+            }
+        }
+
+        // Sort by date (optional but improves readability)
+        selectedClasses.sort((a, b) -> a.get(5).compareTo(b.get(5)));
+
+        // Compute first/last class dates
+        String firstDate = selectedClasses.get(0).get(5);
+        String lastDate = selectedClasses.get(0).get(5);
+
+        for (ArrayList<String> c : selectedClasses) {
+            String date = c.get(5);
+            if (date.compareTo(firstDate) < 0) firstDate = date;
+            if (date.compareTo(lastDate) > 0) lastDate = date;
+        }
+
+        // Validation
+        ArrayList<String> clashMessages = detectClashes(selectedClasses);
+        ArrayList<String> gapMessages = detectGapViolations(selectedClasses);
+
+        System.out.println("_________________________________________");
+        System.out.println("TIMETABLE ID: " + inputId);
+        System.out.println("Classes: " + selectedClasses.size());
+        System.out.println("First class date: " + firstDate);
+        System.out.println("Last class date: " + lastDate);
+        System.out.println("_________________________________________");
+
+        System.out.printf("%-4s %-10s %-18s %-14s %-6s %-12s %-10s %-16s %-12s %-14s%n",
+                "ID", "Topic", "Attendance", "Campus", "Sem", "Class", "Instance", "Date", "Day", "Time");
+
+        System.out.println("____________________________________________________________________________________________");
+
+        for (ArrayList<String> c : selectedClasses) {
+
+            String sessionId = c.get(0);
+
+            String topic = c.get(1);
+            String topicCode = getTopicCode(topic);
+
+            String availability = c.get(2);
+            String[] parts = availability.split(" - ");
+
+            String attendanceMode = parts.length > 0 ? parts[0] : "";
+            String campus = parts.length > 1 ? parts[1] : "";
+            String semester = parts.length > 2 ? parts[2] : "";
+
+            String classFormat = c.get(3);
+            String classInstance = c.get(4);
+            String date = c.get(5);
+            String day = c.get(6);
+            String time = c.get(7);
+
+            System.out.printf("%-4s %-10s %-18s %-14s %-6s %-12s %-10s %-16s %-12s %-14s%n",
+                    sessionId,
+                    topicCode,
+                    truncate(attendanceMode, 18),
+                    truncate(campus, 14),
+                    truncate(semester, 6),
+                    classFormat,
+                    classInstance,
+                    date,
+                    day,
+                    time);
+        }
+
+        System.out.println("____________________________________________________________________________________________");
+
+        // Conflict reporting
+        if (clashMessages.isEmpty() && gapMessages.isEmpty()) {
+            System.out.println("✓ No clashes detected.");
+            System.out.println("✓ No campus travel violations detected.");
+        } else {
+            System.out.println("CONFLICTS DETECTED:");
+
+            if (!clashMessages.isEmpty()) {
+                System.out.println("TIME CLASHES:");
+                for (String msg : clashMessages) {
+                    System.out.println("  - " + msg);
+                }
+            }
+
+            if (!gapMessages.isEmpty()) {
+                System.out.println("CAMPUS GAP VIOLATIONS:");
+                for (String msg : gapMessages) {
+                    System.out.println("  - " + msg);
+                }
+            }
+        }
+
+        System.out.println("_________________________________________");
+    }
 
 
     public static void searchTimetables() {}
