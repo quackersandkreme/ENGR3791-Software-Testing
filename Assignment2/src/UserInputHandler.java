@@ -50,7 +50,8 @@ public class UserInputHandler {
             switch (command) {
                 case "importclasses":
                     if (input.length >= 2) {
-                        Application.importClasses(input[1]);
+                        String filePath = line.substring(line.indexOf(" ") + 1).trim();
+                        Application.importClasses(filePath);
                     } else {
                         System.out.println("Error: importClasses requires CSV file path.");
                         System.out.println("Syntax: importClasses path/to/classes.csv");
