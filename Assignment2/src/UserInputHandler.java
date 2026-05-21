@@ -4,7 +4,16 @@ public class UserInputHandler {
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
 
+        // Opening message for user
+        System.out.println("==================================");
+        System.out.println("   TIMETABLE CLI");
+        System.out.println("   Type 'help' for commands");
+        System.out.println("   Type 'exit' to quit");
+        System.out.println("==================================");
+
         while (in.hasNextLine()) {
+            // CLI prompt
+            System.out.print("CLI > ");
             String line = in.nextLine();
             String[] input = line.split(" ");
 
@@ -75,7 +84,7 @@ public class UserInputHandler {
                 case "help":
                     if (input.length == 2) {
                         Application.help(input[1]);
-                    } else if (input.length == 1){
+                    } else if (input.length == 1) {
                         Application.help();
                     } else {
                         System.out.println("You have entered too many arguments to the help command. \nUse help help if you don't know the syntax for the help command.");
