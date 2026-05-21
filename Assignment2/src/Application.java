@@ -4,22 +4,27 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.LinkedHashSet;
 import java.util.Scanner;
-import java.util.HashSet;
 
 public class Application {
     /*
      * Class that contains all functions of the program
      */
 
+    // Added global Scanner
+    private static final Scanner scanner = new Scanner(System.in);
+
+    // added sessionId counter
+    private static int nextSessionId = 1;
+
     /**
      * The list of classes, that are themselves lists. They (classes) contain sessionID, topicID, availability, class, class instance, date, day, time, location.
      */
-    private static ArrayList<ArrayList> classes = new ArrayList<>();
+    private static final ArrayList<ArrayList<String>> classes = new ArrayList<>();
 
     /**
      * The list of timetables, that are themselves lists. They (timetables) contain every sessionID of the classes they are in.
      */
-    private static ArrayList<ArrayList> timetables = new ArrayList<>();
+    private static final ArrayList<ArrayList<String>> timetables = new ArrayList<>();
 
     /**
      * Just a list of every command we currently have in our program. Implemented as a variable in case any other program other than help wants to use it.
@@ -73,7 +78,7 @@ public class Application {
 
                 boolean updated = false;
 
-                for (ArrayList existingClass : classes) {
+                for (ArrayList<String> existingClass : classes) {
                     boolean sameRecord =
                             existingClass.get(1).equals(topic) &&
                                     existingClass.get(2).equals(availability) &&
@@ -93,8 +98,8 @@ public class Application {
 
                 if (!updated) {
                     ArrayList<String> newClass = new ArrayList<>();
-
-                    newClass.add(String.valueOf(classes.size() + 1)); // sessionID
+                    // implemented counter in the event classes get deleted
+                    newClass.add(String.valueOf(nextSessionId++)); // sessionID
                     newClass.add(topic);
                     newClass.add(availability);
                     newClass.add(classFormat);
@@ -165,11 +170,11 @@ public class Application {
         System.out.println("_________________________________________");
         System.out.println("TopicCode Campus Semester Class Class Instance");
 
-        for (ArrayList classRecord : classes) {
-            String topic = classRecord.get(1).toString();
-            String availability = classRecord.get(2).toString();
-            String classFormat = classRecord.get(3).toString();
-            String classInstance = classRecord.get(4).toString();
+        for (ArrayList<String> classRecord : classes) {
+            String topic = classRecord.get(1);
+            String availability = classRecord.get(2);
+            String classFormat = classRecord.get(3);
+            String classInstance = classRecord.get(4);
 
             String topicCode = getTopicCode(topic);
 
@@ -215,16 +220,16 @@ public class Application {
                 "ID", "Topic", "Availability", "Format", "Instance", "Date", "Day", "Time", "Location");
         System.out.println("_________________________________________");
 
-        for (ArrayList classRecord : classes) {
-            String sessionID = classRecord.get(0).toString();
-            String topic = classRecord.get(1).toString();
-            String availability = classRecord.get(2).toString();
-            String classFormat = classRecord.get(3).toString();
-            String classInstance = classRecord.get(4).toString();
-            String date = classRecord.get(5).toString();
-            String day = classRecord.get(6).toString();
-            String time = classRecord.get(7).toString();
-            String location = classRecord.get(8).toString();
+        for (ArrayList<String> classRecord : classes) {
+            String sessionID = classRecord.get(0);
+            String topic = classRecord.get(1);
+            String availability = classRecord.get(2);
+            String classFormat = classRecord.get(3);
+            String classInstance = classRecord.get(4);
+            String date = classRecord.get(5);
+            String day = classRecord.get(6);
+            String time = classRecord.get(7);
+            String location = classRecord.get(8);
 
             System.out.printf("%-4s %-25s %-30s %-10s %-8s %-12s %-8s %-10s %-20s%n",
                     sessionID,
@@ -253,8 +258,6 @@ public class Application {
             System.out.println("No classes have been imported yet.");
             return;
         }
-
-        Scanner scanner = new Scanner(System.in);
 
         System.out.println("_________________________________________");
         System.out.println("SEARCH CLASSES");
@@ -292,63 +295,63 @@ public class Application {
         System.out.println("_________________________________________");
 
         // Apply AND logic: only include records that match ALL non-empty filters
-        ArrayList<ArrayList> searchResults = new ArrayList<>();
+        ArrayList<ArrayList<String>> searchResults = new ArrayList<>();
 
-        for (ArrayList classRecord : classes) {
+        for (ArrayList<String> classRecord : classes) {
             boolean matches = true;
 
             // Topic: partial match (case-insensitive)
             if (!topicFilter.isEmpty()) {
-                if (!classRecord.get(1).toString().toLowerCase().contains(topicFilter.toLowerCase())) {
+                if (!classRecord.get(1).toLowerCase().contains(topicFilter.toLowerCase())) {
                     matches = false;
                 }
             }
 
             // Availability: exact match (case-insensitive)
             if (matches && !availabilityFilter.isEmpty()) {
-                if (!classRecord.get(2).toString().equalsIgnoreCase(availabilityFilter)) {
+                if (!classRecord.get(2).equalsIgnoreCase(availabilityFilter)) {
                     matches = false;
                 }
             }
 
             // Class Format: exact match (case-insensitive)
             if (matches && !formatFilter.isEmpty()) {
-                if (!classRecord.get(3).toString().equalsIgnoreCase(formatFilter)) {
+                if (!classRecord.get(3).equalsIgnoreCase(formatFilter)) {
                     matches = false;
                 }
             }
 
             // Class Instance: exact match (case-insensitive)
             if (matches && !instanceFilter.isEmpty()) {
-                if (!classRecord.get(4).toString().equalsIgnoreCase(instanceFilter)) {
+                if (!classRecord.get(4).equalsIgnoreCase(instanceFilter)) {
                     matches = false;
                 }
             }
 
             // Date: exact match (case-insensitive)
             if (matches && !dateFilter.isEmpty()) {
-                if (!classRecord.get(5).toString().equalsIgnoreCase(dateFilter)) {
+                if (!classRecord.get(5).equalsIgnoreCase(dateFilter)) {
                     matches = false;
                 }
             }
 
             // Day: exact match (case-insensitive)
             if (matches && !dayFilter.isEmpty()) {
-                if (!classRecord.get(6).toString().equalsIgnoreCase(dayFilter)) {
+                if (!classRecord.get(6).equalsIgnoreCase(dayFilter)) {
                     matches = false;
                 }
             }
 
             // Time: exact match (case-insensitive)
             if (matches && !timeFilter.isEmpty()) {
-                if (!classRecord.get(7).toString().equalsIgnoreCase(timeFilter)) {
+                if (!classRecord.get(7).equalsIgnoreCase(timeFilter)) {
                     matches = false;
                 }
             }
 
             // Location: partial match (case-insensitive)
             if (matches && !locationFilter.isEmpty()) {
-                if (!classRecord.get(8).toString().toLowerCase().contains(locationFilter.toLowerCase())) {
+                if (!classRecord.get(8).toLowerCase().contains(locationFilter.toLowerCase())) {
                     matches = false;
                 }
             }
@@ -372,16 +375,16 @@ public class Application {
                 "ID", "Topic", "Availability", "Format", "Instance", "Date", "Day", "Time", "Location");
         System.out.println("_________________________________________");
 
-        for (ArrayList classRecord : searchResults) {
-            String sessionID = classRecord.get(0).toString();
-            String topic = classRecord.get(1).toString();
-            String availability = classRecord.get(2).toString();
-            String classFormat = classRecord.get(3).toString();
-            String classInstance = classRecord.get(4).toString();
-            String date = classRecord.get(5).toString();
-            String day = classRecord.get(6).toString();
-            String time = classRecord.get(7).toString();
-            String location = classRecord.get(8).toString();
+        for (ArrayList<String> classRecord : searchResults) {
+            String sessionID = classRecord.get(0);
+            String topic = classRecord.get(1);
+            String availability = classRecord.get(2);
+            String classFormat = classRecord.get(3);
+            String classInstance = classRecord.get(4);
+            String date = classRecord.get(5);
+            String day = classRecord.get(6);
+            String time = classRecord.get(7);
+            String location = classRecord.get(8);
 
             System.out.printf("%-4s %-25s %-30s %-10s %-8s %-12s %-8s %-10s %-20s%n",
                     sessionID,
@@ -408,8 +411,6 @@ public class Application {
             return;
         }
 
-        Scanner scanner = new Scanner(System.in);
-
         System.out.println("_________________________________________");
         System.out.println("EDIT CLASS");
         System.out.println("_________________________________________");
@@ -420,12 +421,12 @@ public class Application {
                 "ID", "Topic", "Availability", "Format", "Instance");
         System.out.println("_________________________________________");
 
-        for (ArrayList classRecord : classes) {
-            String sessionID = classRecord.get(0).toString();
-            String topic = classRecord.get(1).toString();
-            String availability = classRecord.get(2).toString();
-            String classFormat = classRecord.get(3).toString();
-            String classInstance = classRecord.get(4).toString();
+        for (ArrayList<String> classRecord : classes) {
+            String sessionID = classRecord.get(0);
+            String topic = classRecord.get(1);
+            String availability = classRecord.get(2);
+            String classFormat = classRecord.get(3);
+            String classInstance = classRecord.get(4);
 
             System.out.printf("%-4s %-25s %-30s %-10s %-8s%n",
                     sessionID,
@@ -440,9 +441,9 @@ public class Application {
         String idInput = scanner.nextLine().trim();
 
         ArrayList<String> selectedClass = null;
-        for (ArrayList classRecord : classes) {
-            if (classRecord.get(0).toString().equals(idInput)) {
-                selectedClass = (ArrayList<String>) classRecord;
+        for (ArrayList<String> classRecord : classes) {
+            if (classRecord.getFirst().equals(idInput)) {
+                selectedClass = classRecord;
                 break;
             }
         }
@@ -471,8 +472,8 @@ public class Application {
         System.out.print("Select field number to edit (1-8): ");
         String fieldChoice = scanner.nextLine().trim();
 
-        int fieldIndex = -1;
-        String fieldName = "";
+        int fieldIndex;
+        String fieldName;
 
         switch (fieldChoice) {
             case "1":
@@ -528,7 +529,7 @@ public class Application {
         System.out.println("_________________________________________");
         System.out.println("CONFIRM CHANGES");
         System.out.println("_________________________________________");
-        System.out.println("Class ID: " + selectedClass.get(0));
+        System.out.println("Class ID: " + selectedClass.getFirst());
         System.out.println(fieldName + ": " + currentValue + " -> " + newValue);
         System.out.println("_________________________________________");
         System.out.print("Confirm edit? (yes/no): ");
@@ -554,8 +555,6 @@ public class Application {
             return;
         }
 
-        Scanner scanner = new Scanner(System.in);
-
         System.out.println("_________________________________________");
         System.out.println("DELETE CLASS");
         System.out.println("_________________________________________");
@@ -566,12 +565,12 @@ public class Application {
                 "ID", "Topic", "Availability", "Format", "Instance");
         System.out.println("_________________________________________");
 
-        for (ArrayList classRecord : classes) {
-            String sessionID = classRecord.get(0).toString();
-            String topic = classRecord.get(1).toString();
-            String availability = classRecord.get(2).toString();
-            String classFormat = classRecord.get(3).toString();
-            String classInstance = classRecord.get(4).toString();
+        for (ArrayList<String> classRecord : classes) {
+            String sessionID = classRecord.get(0);
+            String topic = classRecord.get(1);
+            String availability = classRecord.get(2);
+            String classFormat = classRecord.get(3);
+            String classInstance = classRecord.get(4);
 
             System.out.printf("%-4s %-25s %-30s %-10s %-8s%n",
                     sessionID,
@@ -589,9 +588,9 @@ public class Application {
         int selectedIndex = -1;
 
         for (int i = 0; i < classes.size(); i++) {
-            ArrayList classRecord = classes.get(i);
-            if (classRecord.get(0).toString().equals(idInput)) {
-                selectedClass = (ArrayList<String>) classRecord;
+            ArrayList<String> classRecord = classes.get(i);
+            if (classRecord.getFirst().equals(idInput)) {
+                selectedClass = classRecord;
                 selectedIndex = i;
                 break;
             }
@@ -644,8 +643,7 @@ public class Application {
             return;
         }
 
-        Scanner scanner = new Scanner(System.in);
-        ArrayList<ArrayList> selectedClasses = new ArrayList<>();
+        ArrayList<ArrayList<String>> selectedClasses;
 
         System.out.println("_________________________________________");
         System.out.println("GENERATE TIMETABLE");
@@ -658,13 +656,13 @@ public class Application {
                 "ID", "Topic", "Format", "Day", "Time", "Location");
         System.out.println("_________________________________________");
 
-        for (ArrayList classRecord : classes) {
-            String sessionID = classRecord.get(0).toString();
-            String topic = classRecord.get(1).toString();
-            String classFormat = classRecord.get(3).toString();
-            String day = classRecord.get(6).toString();
-            String time = classRecord.get(7).toString();
-            String location = classRecord.get(8).toString();
+        for (ArrayList<String> classRecord : classes) {
+            String sessionID = classRecord.get(0);
+            String topic = classRecord.get(1);
+            String classFormat = classRecord.get(3);
+            String day = classRecord.get(6);
+            String time = classRecord.get(7);
+            String location = classRecord.get(8);
 
             System.out.printf("%-4s %-25s %-10s %-8s %-10s %-20s%n",
                     sessionID,
@@ -688,15 +686,15 @@ public class Application {
         }
 
         String[] idArray = input.split(",");
-        ArrayList<ArrayList> tempSelectedClasses = new ArrayList<>();
+        ArrayList<ArrayList<String>> tempSelectedClasses = new ArrayList<>();
 
         for (String id : idArray) {
             id = id.trim();
             ArrayList<String> found = null;
 
-            for (ArrayList classRecord : classes) {
-                if (classRecord.get(0).toString().equals(id)) {
-                    found = (ArrayList<String>) classRecord;
+            for (ArrayList<String> classRecord : classes) {
+                if (classRecord.getFirst().equals(id)) {
+                    found = classRecord;
                     break;
                 }
             }
@@ -761,15 +759,15 @@ public class Application {
         ArrayList<String> newTimetable = new ArrayList<>();
         newTimetable.add(String.valueOf(timetables.size() + 1)); // Timetable ID
 
-        for (ArrayList classRecord : selectedClasses) {
-            newTimetable.add(classRecord.get(0).toString()); // Add sessionID
+        for (ArrayList<String> classRecord : selectedClasses) {
+            newTimetable.add(classRecord.getFirst()); // Add sessionID
         }
 
         timetables.add(newTimetable);
 
         System.out.println("_________________________________________");
         System.out.println("Timetable created successfully!");
-        System.out.println("Timetable ID: " + newTimetable.get(0));
+        System.out.println("Timetable ID: " + newTimetable.getFirst());
         System.out.println("Classes added: " + (newTimetable.size() - 1));
         System.out.println("_________________________________________");
     }
@@ -779,27 +777,27 @@ public class Application {
      * @param selectedClasses
      * @return list of clash messages
      */
-    private static ArrayList<String> detectClashes(ArrayList<ArrayList> selectedClasses) {
+    private static ArrayList<String> detectClashes(ArrayList<ArrayList<String>> selectedClasses) {
         ArrayList<String> clashes = new ArrayList<>();
 
         for (int i = 0; i < selectedClasses.size(); i++) {
             for (int j = i + 1; j < selectedClasses.size(); j++) {
-                ArrayList class1 = selectedClasses.get(i);
-                ArrayList class2 = selectedClasses.get(j);
+                ArrayList<String> class1 = selectedClasses.get(i);
+                ArrayList<String> class2 = selectedClasses.get(j);
 
-                String day1 = class1.get(6).toString();
-                String day2 = class2.get(6).toString();
+                String day1 = class1.get(6);
+                String day2 = class2.get(6);
 
                 if (!day1.equalsIgnoreCase(day2)) {
                     continue;
                 }
 
-                String time1 = class1.get(7).toString();
-                String time2 = class2.get(7).toString();
+                String time1 = class1.get(7);
+                String time2 = class2.get(7);
 
                 if (timesOverlap(time1, time2)) {
-                    clashes.add("ID " + class1.get(0) + " (" + time1 + ") conflicts with ID " +
-                            class2.get(0) + " (" + time2 + ") on " + day1);
+                    clashes.add("ID " + class1.getFirst() + " (" + time1 + ") conflicts with ID " +
+                            class2.getFirst() + " (" + time2 + ") on " + day1);
                 }
             }
         }
@@ -864,32 +862,32 @@ public class Application {
      * @param selectedClasses list of selected class records
      * @return list of gap violation messages
      */
-    private static ArrayList<String> detectGapViolations(ArrayList<ArrayList> selectedClasses) {
+    private static ArrayList<String> detectGapViolations(ArrayList<ArrayList<String>> selectedClasses) {
         ArrayList<String> violations = new ArrayList<>();
 
         for (int i = 0; i < selectedClasses.size(); i++) {
             for (int j = i + 1; j < selectedClasses.size(); j++) {
-                ArrayList class1 = selectedClasses.get(i);
-                ArrayList class2 = selectedClasses.get(j);
+                ArrayList<String> class1 = selectedClasses.get(i);
+                ArrayList<String> class2 = selectedClasses.get(j);
 
-                String day1 = class1.get(6).toString();
-                String day2 = class2.get(6).toString();
+                String day1 = class1.get(6);
+                String day2 = class2.get(6);
 
                 // Only check classes on the same day
                 if (!day1.equalsIgnoreCase(day2)) {
                     continue;
                 }
 
-                String location1 = class1.get(8).toString();
-                String location2 = class2.get(8).toString();
+                String location1 = class1.get(8);
+                String location2 = class2.get(8);
 
                 // Only check if locations are different (different campuses)
                 if (location1.equalsIgnoreCase(location2)) {
                     continue;
                 }
 
-                String time1 = class1.get(7).toString();
-                String time2 = class2.get(7).toString();
+                String time1 = class1.get(7);
+                String time2 = class2.get(7);
 
                 try {
                     String[] parts1 = time1.split("-");
@@ -909,8 +907,8 @@ public class Application {
                     if (start2 >= end1) {
                         int gap = start2 - end1;
                         if (gap < 30) {
-                            violations.add("ID " + class1.get(0) + " (ends " + parts1[1] +
-                                    " at " + location1 + ") to ID " + class2.get(0) +
+                            violations.add("ID " + class1.getFirst() + " (ends " + parts1[1] +
+                                    " at " + location1 + ") to ID " + class2.getFirst() +
                                     " (starts " + parts2[0] + " at " + location2 +
                                     "): " + gap + " minutes gap (requires 30 minimum)");
                         }
@@ -920,8 +918,8 @@ public class Application {
                     if (start1 >= end2) {
                         int gap = start1 - end2;
                         if (gap < 30) {
-                            violations.add("ID " + class2.get(0) + " (ends " + parts2[1] +
-                                    " at " + location2 + ") to ID " + class1.get(0) +
+                            violations.add("ID " + class2.getFirst() + " (ends " + parts2[1] +
+                                    " at " + location2 + ") to ID " + class1.getFirst() +
                                     " (starts " + parts1[0] + " at " + location1 +
                                     "): " + gap + " minutes gap (requires 30 minimum)");
                         }
@@ -948,7 +946,50 @@ public class Application {
         return str;
     }
 
-    public static void browseTimetables() {}
+    /**
+     * Prints a lightweight summary of all saved timetables without duplicates.
+     * Shows timetable ID, class count, and the class IDs contained within.
+     */
+    public static void browseTimetables() {
+        if (timetables.isEmpty()) {
+            System.out.println("No timetables have been generated yet.");
+            return;
+        }
+
+        LinkedHashSet<String> displayedTimetables = new LinkedHashSet<>();
+
+        System.out.println("_________________________________________");
+        System.out.println("BROWSE TIMETABLES");
+        System.out.println("_________________________________________");
+
+        System.out.printf("%-6s %-10s %-30s%n", "ID", "Classes", "Class IDs");
+        System.out.println("_________________________________________");
+
+        for (ArrayList<String> timetable : timetables) {
+            String timetableID = timetable.getFirst();
+
+            if (displayedTimetables.add(timetableID)) {
+
+                int classCount = timetable.size() - 1;
+
+                StringBuilder classIDs = new StringBuilder();
+
+                for (int i = 1; i < timetable.size(); i++) {
+                    if (i > 1) classIDs.append(", ");
+                    classIDs.append(timetable.get(i));
+                }
+
+                System.out.printf("%-6s %-10s %-30s%n",
+                        timetableID,
+                        classCount,
+                        classIDs);
+            }
+        }
+
+        System.out.println("_________________________________________");
+        System.out.println("Total timetables: " + displayedTimetables.size());
+        System.out.println("_________________________________________");
+    }
 
 
     public static void viewTimetables() {}

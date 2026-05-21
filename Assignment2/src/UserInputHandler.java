@@ -68,6 +68,10 @@ public class UserInputHandler {
                     Application.exportTimetables();
                     break;
 
+                case "generateTimetable":
+                    Application.generateTimetable();
+                    break;
+
                 case "help":
                     if (input.length == 2) {
                         Application.help(input[1]);
