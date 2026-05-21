@@ -35,73 +35,79 @@ public class UserInputHandler {
         System.out.println(YELLOW + "Type a command and press Enter" + RESET);
         System.out.println();
 
-        while (in.hasNextLine()) {
-            String line = in.nextLine();
-            String[] input = line.split(" ");
+        while (true) {
+            System.out.print("\nEnter Command: ");
+            System.out.flush();
 
-            if (line.equalsIgnoreCase("exit")) {
-                Application.exit();
-                break;
-            }
+            String line = in.nextLine().trim();
 
-            switch (input[0]) {
-                case "importClasses":
-                    if (line.length() > "importClasses".length()) {
-                        String filePath = line.substring("importClasses".length()).trim();
-                        Application.importClasses(filePath);
+            if (line.isBlank()) continue;
+
+            String[] input = line.split("\\s+");
+            if (input.length == 0) continue;
+            String command = input[0].toLowerCase();
+
+            switch (command) {
+                case "importclasses":
+                    if (input.length >= 2) {
+                        Application.importClasses(input[1]);
                     } else {
-                        System.out.println("Error: importClasses requires a CSV file path.");
+                        System.out.println("Error: importClasses requires CSV file path.");
                         System.out.println("Syntax: importClasses path/to/classes.csv");
                     }
                     break;
 
-                case "browseClasses":
+                case "browseclasses":
                     Application.browseClasses();
                     break;
 
-                case "viewClasses":
+                case "viewclasses":
                     Application.viewClasses();
                     break;
 
-                case "searchClasses":
+                case "searchclasses":
                     Application.searchClasses();
                     break;
 
-                case "editClasses":
+                case "editclasses":
                     Application.editClasses();
                     break;
 
-                case "deleteClasses":
+                case "deleteclasses":
                     Application.deleteClasses();
                     break;
 
-                case "browseTimetables":
+                case "browsetimetables":
                     Application.browseTimetables();
                     break;
 
-                case "viewTimetables":
+                case "viewtimetables":
                     Application.viewTimetables();
                     break;
 
-                case "searchTimetables":
+                case "searchtimetables":
                     Application.searchTimetables();
                     break;
 
-                case "editTimetables":
+                case "edittimetables":
                     Application.editTimetables();
                     break;
 
-                case "deleteTimetables":
+                case "deletetimetables":
                     Application.deleteTimetables();
                     break;
 
-                case "exportTimetables":
+                case "exporttimetables":
                     Application.exportTimetables();
                     break;
 
-                case "generateTimetable":
+                case "generatetimetable":
                     Application.generateTimetable();
                     break;
+
+                case "exit":
+                    Application.exit();
+                    return;
 
                 case "help":
                     if (input.length == 2) {
@@ -111,10 +117,6 @@ public class UserInputHandler {
                     } else {
                         System.out.println("You have entered too many arguments to the help command. \nUse help help if you don't know the syntax for the help command.");
                     }
-                    break;
-
-                case "exit":
-                    Application.exit();
                     break;
 
                 default:

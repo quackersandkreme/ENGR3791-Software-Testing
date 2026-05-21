@@ -1141,7 +1141,6 @@ public class Application {
 
     public static void editTimetables() {}
 
-
     public static void deleteTimetables() {}
 
 
