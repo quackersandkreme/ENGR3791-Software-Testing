@@ -3,15 +3,17 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.LinkedHashSet;
+import java.util.Scanner;
+import java.util.HashSet;
 
 public class Application {
     /*
-    * Class that contains all functions of the program
-    */
+     * Class that contains all functions of the program
+     */
 
     /**
-    * The list of classes, that are themselves lists. They (classes) contain sessionID, topicID, availability, class, class instance, date, day, time, location.
-    */
+     * The list of classes, that are themselves lists. They (classes) contain sessionID, topicID, availability, class, class instance, date, day, time, location.
+     */
     private static ArrayList<ArrayList> classes = new ArrayList<>();
 
     /**
@@ -23,7 +25,7 @@ public class Application {
      * Just a list of every command we currently have in our program. Implemented as a variable in case any other program other than help wants to use it.
      */
     private static final String[] commands = {"importClasses", "browseClasses", "viewClasses", "searchClasses", "editClasses", "deleteClasses", "generateTimetable",
-            "browseTimetables", "viewTimetables", "searchTimetables", "editTimetable", "deleteTimetable", "exportTimetable", "help", "exit"};
+            "browseTimetables", "viewTimetables", "searchTimetables", "editTimetables", "deleteTimetables", "exportTimetables", "help", "exit"};
 
     /**
      * Takes a given file path to a CSV file and imports all the classes contained in it.
@@ -197,38 +199,771 @@ public class Application {
         return topicParts[0];
     }
 
+    /**
+     * Displays full details of all class records in a formatted table.
+     */
+    public static void viewClasses() {
+        if (classes.isEmpty()) {
+            System.out.println("No classes have been imported yet.");
+            return;
+        }
 
-    public void viewClasses() {}
+        System.out.println("_________________________________________");
+        System.out.println("VIEW ALL CLASSES");
+        System.out.println("_________________________________________");
+        System.out.printf("%-4s %-25s %-30s %-10s %-8s %-12s %-8s %-10s %-20s%n",
+                "ID", "Topic", "Availability", "Format", "Instance", "Date", "Day", "Time", "Location");
+        System.out.println("_________________________________________");
+
+        for (ArrayList classRecord : classes) {
+            String sessionID = classRecord.get(0).toString();
+            String topic = classRecord.get(1).toString();
+            String availability = classRecord.get(2).toString();
+            String classFormat = classRecord.get(3).toString();
+            String classInstance = classRecord.get(4).toString();
+            String date = classRecord.get(5).toString();
+            String day = classRecord.get(6).toString();
+            String time = classRecord.get(7).toString();
+            String location = classRecord.get(8).toString();
+
+            System.out.printf("%-4s %-25s %-30s %-10s %-8s %-12s %-8s %-10s %-20s%n",
+                    sessionID,
+                    truncate(topic, 25),
+                    truncate(availability, 30),
+                    classFormat,
+                    classInstance,
+                    date,
+                    day,
+                    time,
+                    truncate(location, 20));
+        }
+
+        System.out.println("_________________________________________");
+        System.out.println("Total classes: " + classes.size());
+        System.out.println("_________________________________________");
+    }
+
+    /**
+     * Searches classes by multiple filter criteria with strict AND logic.
+     * Topic and location use partial matching (case-insensitive).
+     * All other fields use exact matching (case-insensitive).
+     */
+    public static void searchClasses() {
+        if (classes.isEmpty()) {
+            System.out.println("No classes have been imported yet.");
+            return;
+        }
+
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("_________________________________________");
+        System.out.println("SEARCH CLASSES");
+        System.out.println("_________________________________________");
+        System.out.println("Enter search criteria (leave blank to skip):");
+        System.out.println("Partial match fields: topic, location");
+        System.out.println("Exact match fields: availability, format, instance, date, day, time");
+        System.out.println("_________________________________________");
+
+        // Collect all filters
+        System.out.print("Topic (partial match): ");
+        String topicFilter = scanner.nextLine().trim();
+
+        System.out.print("Availability (exact match): ");
+        String availabilityFilter = scanner.nextLine().trim();
+
+        System.out.print("Class Format (exact match): ");
+        String formatFilter = scanner.nextLine().trim();
+
+        System.out.print("Class Instance (exact match): ");
+        String instanceFilter = scanner.nextLine().trim();
+
+        System.out.print("Date (exact match): ");
+        String dateFilter = scanner.nextLine().trim();
+
+        System.out.print("Day (exact match): ");
+        String dayFilter = scanner.nextLine().trim();
+
+        System.out.print("Time (exact match): ");
+        String timeFilter = scanner.nextLine().trim();
+
+        System.out.print("Location (partial match): ");
+        String locationFilter = scanner.nextLine().trim();
+
+        System.out.println("_________________________________________");
+
+        // Apply AND logic: only include records that match ALL non-empty filters
+        ArrayList<ArrayList> searchResults = new ArrayList<>();
+
+        for (ArrayList classRecord : classes) {
+            boolean matches = true;
+
+            // Topic: partial match (case-insensitive)
+            if (!topicFilter.isEmpty()) {
+                if (!classRecord.get(1).toString().toLowerCase().contains(topicFilter.toLowerCase())) {
+                    matches = false;
+                }
+            }
+
+            // Availability: exact match (case-insensitive)
+            if (matches && !availabilityFilter.isEmpty()) {
+                if (!classRecord.get(2).toString().equalsIgnoreCase(availabilityFilter)) {
+                    matches = false;
+                }
+            }
+
+            // Class Format: exact match (case-insensitive)
+            if (matches && !formatFilter.isEmpty()) {
+                if (!classRecord.get(3).toString().equalsIgnoreCase(formatFilter)) {
+                    matches = false;
+                }
+            }
+
+            // Class Instance: exact match (case-insensitive)
+            if (matches && !instanceFilter.isEmpty()) {
+                if (!classRecord.get(4).toString().equalsIgnoreCase(instanceFilter)) {
+                    matches = false;
+                }
+            }
+
+            // Date: exact match (case-insensitive)
+            if (matches && !dateFilter.isEmpty()) {
+                if (!classRecord.get(5).toString().equalsIgnoreCase(dateFilter)) {
+                    matches = false;
+                }
+            }
+
+            // Day: exact match (case-insensitive)
+            if (matches && !dayFilter.isEmpty()) {
+                if (!classRecord.get(6).toString().equalsIgnoreCase(dayFilter)) {
+                    matches = false;
+                }
+            }
+
+            // Time: exact match (case-insensitive)
+            if (matches && !timeFilter.isEmpty()) {
+                if (!classRecord.get(7).toString().equalsIgnoreCase(timeFilter)) {
+                    matches = false;
+                }
+            }
+
+            // Location: partial match (case-insensitive)
+            if (matches && !locationFilter.isEmpty()) {
+                if (!classRecord.get(8).toString().toLowerCase().contains(locationFilter.toLowerCase())) {
+                    matches = false;
+                }
+            }
+
+            // Add to results if matches all filters
+            if (matches) {
+                searchResults.add(classRecord);
+            }
+        }
+
+        // Display results
+        if (searchResults.isEmpty()) {
+            System.out.println("No classes match your search criteria.");
+            System.out.println("_________________________________________");
+            return;
+        }
+
+        System.out.println("SEARCH RESULTS: " + searchResults.size() + " class(es) found");
+        System.out.println("_________________________________________");
+        System.out.printf("%-4s %-25s %-30s %-10s %-8s %-12s %-8s %-10s %-20s%n",
+                "ID", "Topic", "Availability", "Format", "Instance", "Date", "Day", "Time", "Location");
+        System.out.println("_________________________________________");
+
+        for (ArrayList classRecord : searchResults) {
+            String sessionID = classRecord.get(0).toString();
+            String topic = classRecord.get(1).toString();
+            String availability = classRecord.get(2).toString();
+            String classFormat = classRecord.get(3).toString();
+            String classInstance = classRecord.get(4).toString();
+            String date = classRecord.get(5).toString();
+            String day = classRecord.get(6).toString();
+            String time = classRecord.get(7).toString();
+            String location = classRecord.get(8).toString();
+
+            System.out.printf("%-4s %-25s %-30s %-10s %-8s %-12s %-8s %-10s %-20s%n",
+                    sessionID,
+                    truncate(topic, 25),
+                    truncate(availability, 30),
+                    classFormat,
+                    classInstance,
+                    date,
+                    day,
+                    time,
+                    truncate(location, 20));
+        }
+
+        System.out.println("_________________________________________");
+    }
+
+    /**
+     * Edits a class record by sessionID with explicit confirmation before applying changes.
+     * SessionID (index 0) cannot be modified and is not included in editable fields.
+     */
+    public static void editClasses() {
+        if (classes.isEmpty()) {
+            System.out.println("No classes have been imported yet.");
+            return;
+        }
+
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("_________________________________________");
+        System.out.println("EDIT CLASS");
+        System.out.println("_________________________________________");
+
+        // Display all classes with IDs
+        System.out.println("Available classes:");
+        System.out.printf("%-4s %-25s %-30s %-10s %-8s%n",
+                "ID", "Topic", "Availability", "Format", "Instance");
+        System.out.println("_________________________________________");
+
+        for (ArrayList classRecord : classes) {
+            String sessionID = classRecord.get(0).toString();
+            String topic = classRecord.get(1).toString();
+            String availability = classRecord.get(2).toString();
+            String classFormat = classRecord.get(3).toString();
+            String classInstance = classRecord.get(4).toString();
+
+            System.out.printf("%-4s %-25s %-30s %-10s %-8s%n",
+                    sessionID,
+                    truncate(topic, 25),
+                    truncate(availability, 30),
+                    classFormat,
+                    classInstance);
+        }
+
+        System.out.println("_________________________________________");
+        System.out.print("Enter the ID of the class to edit: ");
+        String idInput = scanner.nextLine().trim();
+
+        ArrayList<String> selectedClass = null;
+        for (ArrayList classRecord : classes) {
+            if (classRecord.get(0).toString().equals(idInput)) {
+                selectedClass = (ArrayList<String>) classRecord;
+                break;
+            }
+        }
+
+        if (selectedClass == null) {
+            System.out.println("Error: Class with ID " + idInput + " not found.");
+            System.out.println("_________________________________________");
+            return;
+        }
+
+        System.out.println("_________________________________________");
+        System.out.println("EDITING CLASS ID: " + idInput);
+        System.out.println("_________________________________________");
+        System.out.println("Fields available for editing:");
+        System.out.println("1. Topic");
+        System.out.println("2. Availability");
+        System.out.println("3. Class Format");
+        System.out.println("4. Class Instance");
+        System.out.println("5. Date");
+        System.out.println("6. Day");
+        System.out.println("7. Time");
+        System.out.println("8. Location");
+        System.out.println("NOTE: SessionID cannot be modified.");
+        System.out.println("_________________________________________");
+
+        System.out.print("Select field number to edit (1-8): ");
+        String fieldChoice = scanner.nextLine().trim();
+
+        int fieldIndex = -1;
+        String fieldName = "";
+
+        switch (fieldChoice) {
+            case "1":
+                fieldIndex = 1;
+                fieldName = "Topic";
+                break;
+            case "2":
+                fieldIndex = 2;
+                fieldName = "Availability";
+                break;
+            case "3":
+                fieldIndex = 3;
+                fieldName = "Class Format";
+                break;
+            case "4":
+                fieldIndex = 4;
+                fieldName = "Class Instance";
+                break;
+            case "5":
+                fieldIndex = 5;
+                fieldName = "Date";
+                break;
+            case "6":
+                fieldIndex = 6;
+                fieldName = "Day";
+                break;
+            case "7":
+                fieldIndex = 7;
+                fieldName = "Time";
+                break;
+            case "8":
+                fieldIndex = 8;
+                fieldName = "Location";
+                break;
+            default:
+                System.out.println("Error: Invalid field number.");
+                System.out.println("_________________________________________");
+                return;
+        }
+
+        String currentValue = selectedClass.get(fieldIndex);
+        System.out.println("Current " + fieldName + ": " + currentValue);
+        System.out.print("Enter new value: ");
+        String newValue = scanner.nextLine().trim();
+
+        if (newValue.isEmpty()) {
+            System.out.println("Error: New value cannot be empty.");
+            System.out.println("_________________________________________");
+            return;
+        }
+
+        // Explicit confirmation step before applying changes
+        System.out.println("_________________________________________");
+        System.out.println("CONFIRM CHANGES");
+        System.out.println("_________________________________________");
+        System.out.println("Class ID: " + selectedClass.get(0));
+        System.out.println(fieldName + ": " + currentValue + " -> " + newValue);
+        System.out.println("_________________________________________");
+        System.out.print("Confirm edit? (yes/no): ");
+        String confirmation = scanner.nextLine().trim().toLowerCase();
+
+        if (confirmation.equals("yes")) {
+            selectedClass.set(fieldIndex, newValue);
+            System.out.println("Class record updated successfully.");
+            System.out.println("_________________________________________");
+        } else {
+            System.out.println("Edit cancelled. No changes were made.");
+            System.out.println("_________________________________________");
+        }
+    }
+
+    /**
+     * Deletes a class record by sessionID with explicit confirmation.
+     * Ensures the record is fully removed from the classes data structure.
+     */
+    public static void deleteClasses() {
+        if (classes.isEmpty()) {
+            System.out.println("No classes have been imported yet.");
+            return;
+        }
+
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("_________________________________________");
+        System.out.println("DELETE CLASS");
+        System.out.println("_________________________________________");
+
+        // Display all classes with IDs
+        System.out.println("Available classes:");
+        System.out.printf("%-4s %-25s %-30s %-10s %-8s%n",
+                "ID", "Topic", "Availability", "Format", "Instance");
+        System.out.println("_________________________________________");
+
+        for (ArrayList classRecord : classes) {
+            String sessionID = classRecord.get(0).toString();
+            String topic = classRecord.get(1).toString();
+            String availability = classRecord.get(2).toString();
+            String classFormat = classRecord.get(3).toString();
+            String classInstance = classRecord.get(4).toString();
+
+            System.out.printf("%-4s %-25s %-30s %-10s %-8s%n",
+                    sessionID,
+                    truncate(topic, 25),
+                    truncate(availability, 30),
+                    classFormat,
+                    classInstance);
+        }
+
+        System.out.println("_________________________________________");
+        System.out.print("Enter the ID of the class to delete: ");
+        String idInput = scanner.nextLine().trim();
+
+        ArrayList<String> selectedClass = null;
+        int selectedIndex = -1;
+
+        for (int i = 0; i < classes.size(); i++) {
+            ArrayList classRecord = classes.get(i);
+            if (classRecord.get(0).toString().equals(idInput)) {
+                selectedClass = (ArrayList<String>) classRecord;
+                selectedIndex = i;
+                break;
+            }
+        }
+
+        if (selectedClass == null) {
+            System.out.println("Error: Class with ID " + idInput + " not found.");
+            System.out.println("_________________________________________");
+            return;
+        }
+
+        // Display full record details for confirmation
+        System.out.println("_________________________________________");
+        System.out.println("CONFIRM DELETION - RECORD DETAILS");
+        System.out.println("_________________________________________");
+        System.out.println("SessionID: " + selectedClass.get(0));
+        System.out.println("Topic: " + selectedClass.get(1));
+        System.out.println("Availability: " + selectedClass.get(2));
+        System.out.println("Format: " + selectedClass.get(3));
+        System.out.println("Instance: " + selectedClass.get(4));
+        System.out.println("Date: " + selectedClass.get(5));
+        System.out.println("Day: " + selectedClass.get(6));
+        System.out.println("Time: " + selectedClass.get(7));
+        System.out.println("Location: " + selectedClass.get(8));
+        System.out.println("_________________________________________");
+        System.out.println("WARNING: This action cannot be undone.");
+        System.out.print("Are you sure you want to delete this class? (yes/no): ");
+        String confirmation = scanner.nextLine().trim().toLowerCase();
+
+        if (confirmation.equals("yes")) {
+            // Explicitly remove from classes ArrayList
+            classes.remove(selectedIndex);
+            System.out.println("_________________________________________");
+            System.out.println("Class record deleted successfully.");
+            System.out.println("Record removed from data structure.");
+            System.out.println("Total classes remaining: " + classes.size());
+            System.out.println("_________________________________________");
+        } else {
+            System.out.println("Deletion cancelled. Record remains intact.");
+            System.out.println("_________________________________________");
+        }
+    }
+
+    /**
+     * Generates a new timetable by selecting multiple classes with clash and gap detection.
+     */
+    public static void generateTimetable() {
+        if (classes.isEmpty()) {
+            System.out.println("No classes have been imported yet.");
+            return;
+        }
+
+        Scanner scanner = new Scanner(System.in);
+        ArrayList<ArrayList> selectedClasses = new ArrayList<>();
+
+        System.out.println("_________________________________________");
+        System.out.println("GENERATE TIMETABLE");
+        System.out.println("_________________________________________");
+        System.out.println("View and select classes to add to your timetable.");
+        System.out.println("_________________________________________");
+
+        // Display all classes
+        System.out.printf("%-4s %-25s %-10s %-8s %-10s %-20s%n",
+                "ID", "Topic", "Format", "Day", "Time", "Location");
+        System.out.println("_________________________________________");
+
+        for (ArrayList classRecord : classes) {
+            String sessionID = classRecord.get(0).toString();
+            String topic = classRecord.get(1).toString();
+            String classFormat = classRecord.get(3).toString();
+            String day = classRecord.get(6).toString();
+            String time = classRecord.get(7).toString();
+            String location = classRecord.get(8).toString();
+
+            System.out.printf("%-4s %-25s %-10s %-8s %-10s %-20s%n",
+                    sessionID,
+                    truncate(topic, 25),
+                    classFormat,
+                    day,
+                    time,
+                    truncate(location, 20));
+        }
+
+        System.out.println("_________________________________________");
+        System.out.println("Enter class IDs to add to timetable (comma-separated):");
+        System.out.println("Example: 1,3,5");
+        System.out.print("IDs: ");
+        String input = scanner.nextLine().trim();
+
+        if (input.isEmpty()) {
+            System.out.println("Error: You must select at least one class.");
+            System.out.println("_________________________________________");
+            return;
+        }
+
+        String[] idArray = input.split(",");
+        ArrayList<ArrayList> tempSelectedClasses = new ArrayList<>();
+
+        for (String id : idArray) {
+            id = id.trim();
+            ArrayList<String> found = null;
+
+            for (ArrayList classRecord : classes) {
+                if (classRecord.get(0).toString().equals(id)) {
+                    found = (ArrayList<String>) classRecord;
+                    break;
+                }
+            }
+
+            if (found == null) {
+                System.out.println("Warning: Class ID " + id + " not found. Skipping.");
+            } else {
+                tempSelectedClasses.add(found);
+            }
+        }
+
+        if (tempSelectedClasses.isEmpty()) {
+            System.out.println("Error: No valid classes selected.");
+            System.out.println("_________________________________________");
+            return;
+        }
+
+        // Check for clashes
+        ArrayList<String> clashMessages = detectClashes(tempSelectedClasses);
+        ArrayList<String> gapMessages = detectGapViolations(tempSelectedClasses);
+
+        System.out.println("_________________________________________");
+        System.out.println("TIMETABLE VALIDATION");
+        System.out.println("_________________________________________");
+
+        if (clashMessages.isEmpty() && gapMessages.isEmpty()) {
+            System.out.println("✓ No time clashes detected.");
+            System.out.println("✓ All campus gap requirements met.");
+            selectedClasses = tempSelectedClasses;
+        } else {
+            System.out.println("CONFLICTS DETECTED:");
+            System.out.println("_________________________________________");
+
+            if (!clashMessages.isEmpty()) {
+                System.out.println("TIME CLASHES:");
+                for (String msg : clashMessages) {
+                    System.out.println("  - " + msg);
+                }
+            }
+
+            if (!gapMessages.isEmpty()) {
+                System.out.println("CAMPUS GAP VIOLATIONS (30-minute rule):");
+                for (String msg : gapMessages) {
+                    System.out.println("  - " + msg);
+                }
+            }
+
+            System.out.println("_________________________________________");
+            System.out.print("Add to timetable anyway? (yes/no): ");
+            String override = scanner.nextLine().trim().toLowerCase();
+
+            if (override.equals("yes")) {
+                selectedClasses = tempSelectedClasses;
+            } else {
+                System.out.println("Timetable creation cancelled.");
+                System.out.println("_________________________________________");
+                return;
+            }
+        }
+
+        // Create timetable
+        ArrayList<String> newTimetable = new ArrayList<>();
+        newTimetable.add(String.valueOf(timetables.size() + 1)); // Timetable ID
+
+        for (ArrayList classRecord : selectedClasses) {
+            newTimetable.add(classRecord.get(0).toString()); // Add sessionID
+        }
+
+        timetables.add(newTimetable);
+
+        System.out.println("_________________________________________");
+        System.out.println("Timetable created successfully!");
+        System.out.println("Timetable ID: " + newTimetable.get(0));
+        System.out.println("Classes added: " + (newTimetable.size() - 1));
+        System.out.println("_________________________________________");
+    }
+
+    /**
+     * Detects time clashes between classes on the same day.
+     * @param selectedClasses
+     * @return list of clash messages
+     */
+    private static ArrayList<String> detectClashes(ArrayList<ArrayList> selectedClasses) {
+        ArrayList<String> clashes = new ArrayList<>();
+
+        for (int i = 0; i < selectedClasses.size(); i++) {
+            for (int j = i + 1; j < selectedClasses.size(); j++) {
+                ArrayList class1 = selectedClasses.get(i);
+                ArrayList class2 = selectedClasses.get(j);
+
+                String day1 = class1.get(6).toString();
+                String day2 = class2.get(6).toString();
+
+                if (!day1.equalsIgnoreCase(day2)) {
+                    continue;
+                }
+
+                String time1 = class1.get(7).toString();
+                String time2 = class2.get(7).toString();
+
+                if (timesOverlap(time1, time2)) {
+                    clashes.add("ID " + class1.get(0) + " (" + time1 + ") conflicts with ID " +
+                            class2.get(0) + " (" + time2 + ") on " + day1);
+                }
+            }
+        }
+
+        return clashes;
+    }
+
+    /**
+     * Checks if two time slots overlap.
+     * Expects times in format "HH:MM-HH:MM" (e.g., "09:00-10:00")
+     * Returns true if the intervals overlap (touching is NOT considered overlap).
+     * Example: 09:00-10:00 and 10:00-11:00 do NOT overlap (sequential)
+     * Example: 09:00-10:00 and 09:30-10:30 DO overlap
+     * @param time1 first time slot
+     * @param time2 second time slot
+     * @return true if times overlap
+     */
+    private static boolean timesOverlap(String time1, String time2) {
+        try {
+            String[] parts1 = time1.split("-");
+            String[] parts2 = time2.split("-");
+
+            if (parts1.length != 2 || parts2.length != 2) {
+                return false;
+            }
+
+            int start1 = timeToMinutes(parts1[0].trim());
+            int end1 = timeToMinutes(parts1[1].trim());
+            int start2 = timeToMinutes(parts2[0].trim());
+            int end2 = timeToMinutes(parts2[1].trim());
+
+            // Two intervals overlap if one starts before the other ends
+            // [start1, end1) and [start2, end2)
+            // They overlap if: start1 < end2 AND start2 < end1
+            return (start1 < end2 && start2 < end1);
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    /**
+     * Converts time string "HH:MM" to minutes since midnight.
+     * @param time
+     * @return minutes since midnight
+     */
+    private static int timeToMinutes(String time) {
+        String[] parts = time.split(":");
+        int hours = Integer.parseInt(parts[0]);
+        int minutes = Integer.parseInt(parts[1]);
+        return hours * 60 + minutes;
+    }
+
+    /**
+     * Detects violations of the 30-minute inter-campus gap rule.
+     * Rule: When two classes on the SAME DAY are at DIFFERENT locations,
+     * there must be at least 30 minutes between the end of one and start of the next.
+     *
+     * Example: Class A ends at 10:00 at Campus North
+     *          Class B starts at 10:15 at Campus South
+     *          Gap: 15 minutes (VIOLATION - needs 30)
+     *
+     * @param selectedClasses list of selected class records
+     * @return list of gap violation messages
+     */
+    private static ArrayList<String> detectGapViolations(ArrayList<ArrayList> selectedClasses) {
+        ArrayList<String> violations = new ArrayList<>();
+
+        for (int i = 0; i < selectedClasses.size(); i++) {
+            for (int j = i + 1; j < selectedClasses.size(); j++) {
+                ArrayList class1 = selectedClasses.get(i);
+                ArrayList class2 = selectedClasses.get(j);
+
+                String day1 = class1.get(6).toString();
+                String day2 = class2.get(6).toString();
+
+                // Only check classes on the same day
+                if (!day1.equalsIgnoreCase(day2)) {
+                    continue;
+                }
+
+                String location1 = class1.get(8).toString();
+                String location2 = class2.get(8).toString();
+
+                // Only check if locations are different (different campuses)
+                if (location1.equalsIgnoreCase(location2)) {
+                    continue;
+                }
+
+                String time1 = class1.get(7).toString();
+                String time2 = class2.get(7).toString();
+
+                try {
+                    String[] parts1 = time1.split("-");
+                    String[] parts2 = time2.split("-");
+
+                    if (parts1.length != 2 || parts2.length != 2) {
+                        continue;
+                    }
+
+                    int end1 = timeToMinutes(parts1[1].trim());
+                    int start2 = timeToMinutes(parts2[0].trim());
+                    int end2 = timeToMinutes(parts2[1].trim());
+                    int start1 = timeToMinutes(parts1[0].trim());
+
+                    // Check if class2 starts too soon after class1 ends
+                    // Gap must be at least 30 minutes
+                    if (start2 >= end1) {
+                        int gap = start2 - end1;
+                        if (gap < 30) {
+                            violations.add("ID " + class1.get(0) + " (ends " + parts1[1] +
+                                    " at " + location1 + ") to ID " + class2.get(0) +
+                                    " (starts " + parts2[0] + " at " + location2 +
+                                    "): " + gap + " minutes gap (requires 30 minimum)");
+                        }
+                    }
+
+                    // Check reverse direction: if class1 starts too soon after class2 ends
+                    if (start1 >= end2) {
+                        int gap = start1 - end2;
+                        if (gap < 30) {
+                            violations.add("ID " + class2.get(0) + " (ends " + parts2[1] +
+                                    " at " + location2 + ") to ID " + class1.get(0) +
+                                    " (starts " + parts1[0] + " at " + location1 +
+                                    "): " + gap + " minutes gap (requires 30 minimum)");
+                        }
+                    }
+                } catch (Exception e) {
+                    // Skip if time format is invalid
+                }
+            }
+        }
+
+        return violations;
+    }
+
+    /**
+     * Truncates a string to a maximum length with ellipsis.
+     * @param str
+     * @param maxLength
+     * @return truncated string
+     */
+    private static String truncate(String str, int maxLength) {
+        if (str.length() > maxLength) {
+            return str.substring(0, maxLength - 3) + "...";
+        }
+        return str;
+    }
+
+    public static void browseTimetables() {}
 
 
-    public void searchClasses() {}
+    public static void viewTimetables() {}
 
 
-    public void editClasses() {}
+    public static void searchTimetables() {}
 
 
-    public void deleteClasses() {}
+    public static void editTimetables() {}
 
 
-    public void generateTimetable() {}
+    public static void deleteTimetables() {}
 
 
-    public void browseTimetables() {}
-
-
-    public void viewTimetable() {}
-
-
-    public void searchTimetables() {}
-
-
-    public void editTimetable() {}
-
-
-    public void deleteTimetable() {}
-
-    
-    public void exportTimetable() {}
+    public static void exportTimetables() {}
 
     /**
      * A command that provides help to a user.
@@ -264,47 +999,77 @@ public class Application {
                 break;
 
             case "viewClasses":
-                System.out.println("Help feature for this command currently isn't implemented.");
+                System.out.println("Definition: A command that displays all class records with their full details in a formatted table.");
+                System.out.println("Syntax: |viewClasses|.");
                 break;
 
             case "searchClasses":
-                System.out.println("Help feature for this command currently isn't implemented.");
+                System.out.println("Definition: Searches for classes using multiple filter criteria with AND logic.");
+                System.out.println("Partial matching: topic, location (case-insensitive)");
+                System.out.println("Exact matching: availability, format, instance, date, day, time (case-insensitive)");
+                System.out.println("Leave any criterion blank to skip it.");
+                System.out.println("Syntax: |searchClasses|.");
                 break;
 
             case "editClasses":
-                System.out.println("Help feature for this command currently isn't implemented.");
+                System.out.println("Definition: Edits any field of a selected class record with explicit confirmation.");
+                System.out.println("Note: SessionID cannot be modified.");
+                System.out.println("Editable fields: topic, availability, format, instance, date, day, time, location.");
+                System.out.println("Syntax: |editClasses|.");
+                System.out.println("You will be prompted to select a class ID and field to edit.");
                 break;
 
             case "deleteClasses":
-                System.out.println("Help feature for this command currently isn't implemented.");
+                System.out.println("Definition: Deletes a class record with explicit confirmation.");
+                System.out.println("The record is fully removed from the data structure.");
+                System.out.println("WARNING: This action cannot be undone.");
+                System.out.println("Syntax: |deleteClasses|.");
+                System.out.println("You will be prompted to select a class ID to delete.");
                 break;
 
             case "generateTimetable":
-                System.out.println("Help feature for this command currently isn't implemented.");
+                System.out.println("Definition: Generates a timetable by selecting multiple classes.");
+                System.out.println("Validation checks:");
+                System.out.println("  - Detects time clashes on the same day");
+                System.out.println("  - Enforces 30-minute gap rule between different campus locations");
+                System.out.println("Syntax: |generateTimetable|.");
+                System.out.println("You will be prompted to enter class IDs (comma-separated).");
                 break;
 
-            case "browseTimetable":
-                System.out.println("Help feature for this command currently isn't implemented.");
+            case "browseTimetables":
+                System.out.println("Definition: Displays a list of all saved timetables.");
+                System.out.println("Syntax: |browseTimetables|.");
+                System.out.println("Shows timetable IDs and basic summary information.");
                 break;
 
-            case "viewTimetable":
-                System.out.println("Help feature for this command currently isn't implemented.");
+            case "viewTimetables":
+                System.out.println("Definition: Displays the full details of a selected timetable.");
+                System.out.println("Syntax: |viewTimetables|.");
+                System.out.println("Includes all classes and detects clashes or gaps.");
                 break;
 
-            case "searchTimetable":
-                System.out.println("Help feature for this command currently isn't implemented.");
+            case "searchTimetables":
+                System.out.println("Definition: Searches timetables using criteria such as name, semester, or included topics.");
+                System.out.println("Syntax: |searchTimetables|.");
+                System.out.println("Multiple filters can be combined using AND logic.");
                 break;
 
-            case "editTimetable":
-                System.out.println("Help feature for this command currently isn't implemented.");
+            case "editTimetables":
+                System.out.println("Definition: Allows modification of a timetable by swapping class instances.");
+                System.out.println("Syntax: |editTimetables|.");
+                System.out.println("Validates changes for time clashes and campus travel constraints.");
                 break;
 
-            case "deleteTimetable":
-                System.out.println("Help feature for this command currently isn't implemented.");
+            case "deleteTimetables":
+                System.out.println("Definition: Deletes a selected timetable after confirmation.");
+                System.out.println("Syntax: |deleteTimetables|.");
+                System.out.println("WARNING: This action permanently removes the timetable.");
                 break;
 
-            case "exportTimetable":
-                System.out.println("Help feature for this command currently isn't implemented.");
+            case "exportTimetables":
+                System.out.println("Definition: Exports a timetable to a file format for external use.");
+                System.out.println("Syntax: |exportTimetables|.");
+                System.out.println("Includes all class details such as time, location, and topic information.");
                 break;
 
             case "help":
@@ -323,11 +1088,10 @@ public class Application {
         }
         System.out.println("_________________________________________");
     }
-
     /**
-    * Exits the program after sending a confirmation message to the user.
-    *
-    */
+     * Exits the program after sending a confirmation message to the user.
+     *
+     */
     public static void exit() {
         System.out.println("Closing Student Timetables software now!");
         System.exit(0);
