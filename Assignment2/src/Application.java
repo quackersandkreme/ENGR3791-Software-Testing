@@ -25,7 +25,7 @@ public class Application {
      * Just a list of every command we currently have in our program. Implemented as a variable in case any other program other than help wants to use it.
      */
     private static final String[] commands = {"importClasses", "browseClasses", "viewClasses", "searchClasses", "editClasses", "deleteClasses", "generateTimetable",
-            "browseTimetables", "viewTimetables", "searchTimetables", "editTimetable", "deleteTimetable", "exportTimetable", "help", "exit"};
+            "browseTimetables", "viewTimetables", "searchTimetables", "editTimetables", "deleteTimetables", "exportTimetables", "help", "exit"};
 
     /**
      * Takes a given file path to a CSV file and imports all the classes contained in it.
@@ -948,22 +948,22 @@ public class Application {
         return str;
     }
 
-    public void browseTimetables() {}
+    public static void browseTimetables() {}
 
 
-    public void viewTimetable() {}
+    public static void viewTimetables() {}
 
 
-    public void searchTimetables() {}
+    public static void searchTimetables() {}
 
 
-    public void editTimetable() {}
+    public static void editTimetables() {}
 
 
-    public void deleteTimetable() {}
+    public static void deleteTimetables() {}
 
 
-    public void exportTimetable() {}
+    public static void exportTimetables() {}
 
     /**
      * A command that provides help to a user.
@@ -1036,28 +1036,40 @@ public class Application {
                 System.out.println("You will be prompted to enter class IDs (comma-separated).");
                 break;
 
-            case "browseTimetable":
-                System.out.println("Help feature for this command currently isn't implemented.");
+            case "browseTimetables":
+                System.out.println("Definition: Displays a list of all saved timetables.");
+                System.out.println("Syntax: |browseTimetables|.");
+                System.out.println("Shows timetable IDs and basic summary information.");
                 break;
 
-            case "viewTimetable":
-                System.out.println("Help feature for this command currently isn't implemented.");
+            case "viewTimetables":
+                System.out.println("Definition: Displays the full details of a selected timetable.");
+                System.out.println("Syntax: |viewTimetables|.");
+                System.out.println("Includes all classes and detects clashes or gaps.");
                 break;
 
-            case "searchTimetable":
-                System.out.println("Help feature for this command currently isn't implemented.");
+            case "searchTimetables":
+                System.out.println("Definition: Searches timetables using criteria such as name, semester, or included topics.");
+                System.out.println("Syntax: |searchTimetables|.");
+                System.out.println("Multiple filters can be combined using AND logic.");
                 break;
 
-            case "editTimetable":
-                System.out.println("Help feature for this command currently isn't implemented.");
+            case "editTimetables":
+                System.out.println("Definition: Allows modification of a timetable by swapping class instances.");
+                System.out.println("Syntax: |editTimetables|.");
+                System.out.println("Validates changes for time clashes and campus travel constraints.");
                 break;
 
-            case "deleteTimetable":
-                System.out.println("Help feature for this command currently isn't implemented.");
+            case "deleteTimetables":
+                System.out.println("Definition: Deletes a selected timetable after confirmation.");
+                System.out.println("Syntax: |deleteTimetables|.");
+                System.out.println("WARNING: This action permanently removes the timetable.");
                 break;
 
-            case "exportTimetable":
-                System.out.println("Help feature for this command currently isn't implemented.");
+            case "exportTimetables":
+                System.out.println("Definition: Exports a timetable to a file format for external use.");
+                System.out.println("Syntax: |exportTimetables|.");
+                System.out.println("Includes all class details such as time, location, and topic information.");
                 break;
 
             case "help":

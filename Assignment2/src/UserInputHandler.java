@@ -2,12 +2,16 @@ import java.util.Scanner;
 
 public class UserInputHandler {
     public static void main(String[] args) {
-
         Scanner in = new Scanner(System.in);
 
         while (in.hasNextLine()) {
             String line = in.nextLine();
             String[] input = line.split(" ");
+
+            if (line.equalsIgnoreCase("exit")) {
+                Application.exit();
+                break;
+            }
 
             switch (input[0]) {
                 case "importClasses":
@@ -40,26 +44,28 @@ public class UserInputHandler {
                     Application.deleteClasses();
                     break;
 
-                case "generateTimetable":
-                    Application.generateTimetable();
+                case "browseTimetables":
+                    Application.browseTimetables();
                     break;
 
-                case "browseTimetable":
+                case "viewTimetables":
+                    Application.viewTimetables();
                     break;
 
-                case "viewTimetable":
+                case "searchTimetables":
+                    Application.searchTimetables();
                     break;
 
-                case "searchTimetable":
+                case "editTimetables":
+                    Application.editTimetables();
                     break;
 
-                case "editTimetable":
+                case "deleteTimetables":
+                    Application.deleteTimetables();
                     break;
 
-                case "deleteTimetable":
-                    break;
-
-                case "exportTimetable":
+                case "exportTimetables":
+                    Application.exportTimetables();
                     break;
 
                 case "help":
