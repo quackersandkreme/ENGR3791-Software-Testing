@@ -25,18 +25,23 @@ public class UserInputHandler {
                     break;
 
                 case "viewClasses":
+                    Application.viewClasses();
                     break;
 
                 case "searchClasses":
+                    Application.searchClasses();
                     break;
 
                 case "editClasses":
+                    Application.editClasses();
                     break;
 
                 case "deleteClasses":
+                    Application.deleteClasses();
                     break;
 
                 case "generateTimetable":
+                    Application.generateTimetable();
                     break;
 
                 case "browseTimetable":
