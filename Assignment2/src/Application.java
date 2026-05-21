@@ -947,8 +947,8 @@ public class Application {
     }
 
     /**
-     * Prints out the list of all saved timetables without duplicates,
-     * formatted as TimetableID Classes.
+     * Prints a lightweight summary of all saved timetables without duplicates.
+     * Shows timetable ID, class count, and the class IDs contained within.
      */
     public static void browseTimetables() {
         if (timetables.isEmpty()) {
@@ -961,18 +961,33 @@ public class Application {
         System.out.println("_________________________________________");
         System.out.println("BROWSE TIMETABLES");
         System.out.println("_________________________________________");
-        System.out.println("Timetable ID  Classes");
+
+        System.out.printf("%-6s %-10s %-30s%n", "ID", "Classes", "Class IDs");
+        System.out.println("_________________________________________");
 
         for (ArrayList<String> timetable : timetables) {
             String timetableID = timetable.getFirst();
-            int classCount = timetable.size() - 1;
 
             if (displayedTimetables.add(timetableID)) {
-                System.out.println(timetableID + "             " + classCount);
+
+                int classCount = timetable.size() - 1;
+
+                StringBuilder classIDs = new StringBuilder();
+
+                for (int i = 1; i < timetable.size(); i++) {
+                    if (i > 1) classIDs.append(", ");
+                    classIDs.append(timetable.get(i));
+                }
+
+                System.out.printf("%-6s %-10s %-30s%n",
+                        timetableID,
+                        classCount,
+                        classIDs);
             }
         }
 
-        System.out.println("Total unique timetables: " + displayedTimetables.size());
+        System.out.println("_________________________________________");
+        System.out.println("Total timetables: " + displayedTimetables.size());
         System.out.println("_________________________________________");
     }
 
