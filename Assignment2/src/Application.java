@@ -1135,10 +1135,400 @@ public class Application {
         System.out.println("_________________________________________");
     }
 
+    //Searches timetables
+    public static void searchTimetables() {
 
-    public static void searchTimetables() {}
+        if (timetables.isEmpty()) {
+            System.out.println("No timetables have been generated yet.");
+            return;
+        }
 
-    public static void editTimetables() {}
+        System.out.println("_________________________________________");
+        System.out.println("SEARCH TIMETABLES");
+        System.out.println("_________________________________________");
+        System.out.println("Leave fields blank to skip filtering.");
+        System.out.println("_________________________________________");
+
+        // Collect filters
+        System.out.print("Timetable ID: ");
+        String timetableIdFilter = scanner.nextLine().trim();
+
+        System.out.print("Class ID included: ");
+        String classIdFilter = scanner.nextLine().trim();
+
+        System.out.print("Topic (partial match): ");
+        String topicFilter = scanner.nextLine().trim().toLowerCase();
+
+        System.out.print("Day (exact match): ");
+        String dayFilter = scanner.nextLine().trim().toLowerCase();
+
+        System.out.println("_________________________________________");
+
+        ArrayList<ArrayList<String>> matchingTimetables = new ArrayList<>();
+
+        // Search through all timetables
+        for (ArrayList<String> timetable : timetables) {
+
+            boolean matches = true;
+
+            // Filter by timetable ID
+            if (!timetableIdFilter.isEmpty()) {
+                if (!timetable.getFirst().equals(timetableIdFilter)) {
+                    matches = false;
+                }
+            }
+
+            // Filter by included class ID
+            if (matches && !classIdFilter.isEmpty()) {
+
+                boolean containsClass = false;
+
+                for (int i = 1; i < timetable.size(); i++) {
+                    if (timetable.get(i).equals(classIdFilter)) {
+                        containsClass = true;
+                        break;
+                    }
+                }
+
+                if (!containsClass) {
+                    matches = false;
+                }
+            }
+
+            // Filter by topic or day
+            if (matches && (!topicFilter.isEmpty() || !dayFilter.isEmpty())) {
+
+                boolean foundMatchingClass = false;
+
+                for (int i = 1; i < timetable.size(); i++) {
+
+                    String sessionId = timetable.get(i);
+
+                    for (ArrayList<String> classRecord : classes) {
+
+                        if (classRecord.getFirst().equals(sessionId)) {
+
+                            boolean classMatches = true;
+
+                            // Topic partial match
+                            if (!topicFilter.isEmpty()) {
+
+                                String topic = classRecord.get(1).toLowerCase();
+
+                                if (!topic.contains(topicFilter)) {
+                                    classMatches = false;
+                                }
+                            }
+
+                            // Day exact match
+                            if (classMatches && !dayFilter.isEmpty()) {
+
+                                String day = classRecord.get(6).toLowerCase();
+
+                                if (!day.equals(dayFilter)) {
+                                    classMatches = false;
+                                }
+                            }
+
+                            if (classMatches) {
+                                foundMatchingClass = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (foundMatchingClass) {
+                        break;
+                    }
+                }
+
+                if (!foundMatchingClass) {
+                    matches = false;
+                }
+            }
+
+            if (matches) {
+                matchingTimetables.add(timetable);
+            }
+        }
+
+        // Display results
+        if (matchingTimetables.isEmpty()) {
+
+            System.out.println("No timetables matched your search criteria.");
+            System.out.println("_________________________________________");
+            return;
+        }
+
+        System.out.println("MATCHING TIMETABLES");
+        System.out.println("_________________________________________");
+
+        System.out.printf("%-6s %-10s %-30s%n",
+                "ID", "Classes", "Class IDs");
+
+        System.out.println("_________________________________________");
+
+        for (ArrayList<String> timetable : matchingTimetables) {
+
+            String timetableId = timetable.getFirst();
+
+            int classCount = timetable.size() - 1;
+
+            StringBuilder classIds = new StringBuilder();
+
+            for (int i = 1; i < timetable.size(); i++) {
+
+                if (i > 1) {
+                    classIds.append(", ");
+                }
+
+                classIds.append(timetable.get(i));
+            }
+
+            System.out.printf("%-6s %-10s %-30s%n",
+                    timetableId,
+                    classCount,
+                    classIds);
+        }
+
+        System.out.println("_________________________________________");
+        System.out.println("Total matches: " + matchingTimetables.size());
+        System.out.println("_________________________________________");
+    }
+
+    //Edits an existing timetable by adding or removing classes
+    public static void editTimetables() {
+        if (timetables.isEmpty()) {
+            System.out.println("No timetables have been generated yet.");
+            return;
+        }
+
+        System.out.println("_________________________________________");
+        System.out.println("EDIT TIMETABLE");
+        System.out.println("_________________________________________");
+
+        // Display all timetables
+        System.out.printf("%-6s %-10s %-30s%n", "ID", "Classes", "Class IDs");
+        System.out.println("_________________________________________");
+
+        for (ArrayList<String> timetable : timetables) {
+            String timetableID = timetable.getFirst();
+
+            StringBuilder classIDs = new StringBuilder();
+
+            for (int i = 1; i < timetable.size(); i++) {
+                if (i > 1) classIDs.append(", ");
+                classIDs.append(timetable.get(i));
+            }
+
+            System.out.printf("%-6s %-10s %-30s%n",
+                    timetableID,
+                    timetable.size() - 1,
+                    classIDs);
+        }
+
+        System.out.println("_________________________________________");
+        System.out.print("Enter Timetable ID to edit: ");
+        String timetableId = scanner.nextLine().trim();
+
+        ArrayList<String> selectedTimetable = null;
+
+        for (ArrayList<String> timetable : timetables) {
+            if (timetable.getFirst().equals(timetableId)) {
+                selectedTimetable = timetable;
+                break;
+            }
+        }
+
+        if (selectedTimetable == null) {
+            System.out.println("Error: Timetable not found.");
+            System.out.println("_________________________________________");
+            return;
+        }
+
+        System.out.println("_________________________________________");
+        System.out.println("EDIT OPTIONS");
+        System.out.println("1. Add class");
+        System.out.println("2. Remove class");
+        System.out.println("_________________________________________");
+        System.out.print("Choose option (1-2): ");
+
+        String choice = scanner.nextLine().trim();
+
+        switch (choice) {
+
+            case "1":
+
+                // Show all available classes
+                System.out.println("_________________________________________");
+                System.out.println("AVAILABLE CLASSES");
+                System.out.println("_________________________________________");
+
+                System.out.printf("%-4s %-25s %-10s %-8s %-12s%n",
+                        "ID", "Topic", "Format", "Day", "Time");
+
+                System.out.println("_________________________________________");
+
+                for (ArrayList<String> classRecord : classes) {
+
+                    System.out.printf("%-4s %-25s %-10s %-8s %-12s%n",
+                            classRecord.get(0),
+                            truncate(classRecord.get(1), 25),
+                            classRecord.get(3),
+                            classRecord.get(6),
+                            classRecord.get(7));
+                }
+
+                System.out.println("_________________________________________");
+                System.out.print("Enter class ID to add: ");
+
+                String addId = scanner.nextLine().trim();
+
+                // Check class exists
+                ArrayList<String> classToAdd = null;
+
+                for (ArrayList<String> classRecord : classes) {
+                    if (classRecord.getFirst().equals(addId)) {
+                        classToAdd = classRecord;
+                        break;
+                    }
+                }
+
+                if (classToAdd == null) {
+                    System.out.println("Error: Class not found.");
+                    return;
+                }
+
+                // Prevent duplicates
+                if (selectedTimetable.contains(addId)) {
+                    System.out.println("Error: Class already exists in timetable.");
+                    return;
+                }
+
+                // Build temporary class list for validation
+                ArrayList<ArrayList<String>> updatedClasses = new ArrayList<>();
+
+                for (int i = 1; i < selectedTimetable.size(); i++) {
+                    String sessionId = selectedTimetable.get(i);
+
+                    for (ArrayList<String> classRecord : classes) {
+                        if (classRecord.getFirst().equals(sessionId)) {
+                            updatedClasses.add(classRecord);
+                            break;
+                        }
+                    }
+                }
+
+                updatedClasses.add(classToAdd);
+
+                // Validate timetable
+                ArrayList<String> clashMessages = detectClashes(updatedClasses);
+                ArrayList<String> gapMessages = detectGapViolations(updatedClasses);
+
+                System.out.println("_________________________________________");
+                System.out.println("VALIDATION RESULTS");
+                System.out.println("_________________________________________");
+
+                if (clashMessages.isEmpty() && gapMessages.isEmpty()) {
+                    System.out.println("✓ No clashes detected.");
+                    System.out.println("✓ No campus gap violations detected.");
+                } else {
+
+                    if (!clashMessages.isEmpty()) {
+                        System.out.println("TIME CLASHES:");
+
+                        for (String msg : clashMessages) {
+                            System.out.println("  - " + msg);
+                        }
+                    }
+
+                    if (!gapMessages.isEmpty()) {
+                        System.out.println("CAMPUS GAP VIOLATIONS:");
+
+                        for (String msg : gapMessages) {
+                            System.out.println("  - " + msg);
+                        }
+                    }
+
+                    System.out.println("_________________________________________");
+                    System.out.print("Add class anyway? (yes/no): ");
+
+                    String confirm = scanner.nextLine().trim().toLowerCase();
+
+                    if (!confirm.equals("yes")) {
+                        System.out.println("Edit cancelled.");
+                        return;
+                    }
+                }
+
+                // Add class
+                selectedTimetable.add(addId);
+
+                System.out.println("_________________________________________");
+                System.out.println("Class added successfully.");
+                System.out.println("Updated timetable size: " + (selectedTimetable.size() - 1));
+                System.out.println("_________________________________________");
+
+                break;
+
+            case "2":
+
+                // Show current classes
+                System.out.println("_________________________________________");
+                System.out.println("CURRENT TIMETABLE CLASSES");
+                System.out.println("_________________________________________");
+
+                for (int i = 1; i < selectedTimetable.size(); i++) {
+                    String sessionId = selectedTimetable.get(i);
+
+                    for (ArrayList<String> classRecord : classes) {
+                        if (classRecord.getFirst().equals(sessionId)) {
+
+                            System.out.printf("ID: %-4s Topic: %-25s Time: %-12s%n",
+                                    classRecord.get(0),
+                                    truncate(classRecord.get(1), 25),
+                                    classRecord.get(7));
+                        }
+                    }
+                }
+
+                System.out.println("_________________________________________");
+                System.out.print("Enter class ID to remove: ");
+
+                String removeId = scanner.nextLine().trim();
+
+                if (!selectedTimetable.contains(removeId)) {
+                    System.out.println("Error: Class not found in timetable.");
+                    return;
+                }
+
+                System.out.println("_________________________________________");
+                System.out.print("Confirm removal? (yes/no): ");
+
+                String confirmRemove = scanner.nextLine().trim().toLowerCase();
+
+                if (confirmRemove.equals("yes")) {
+
+                    selectedTimetable.remove(removeId);
+
+                    System.out.println("_________________________________________");
+                    System.out.println("Class removed successfully.");
+                    System.out.println("Remaining classes: " + (selectedTimetable.size() - 1));
+                    System.out.println("_________________________________________");
+
+                } else {
+
+                    System.out.println("Removal cancelled.");
+                    System.out.println("_________________________________________");
+                }
+
+                break;
+
+            default:
+                System.out.println("Error: Invalid option.");
+                System.out.println("_________________________________________");
+        }
+    }
 
     public static void deleteTimetables() {
         if (timetables.isEmpty()) {
@@ -1227,7 +1617,120 @@ public class Application {
         }
     }
 
-    public static void exportTimetables() {}
+    // Exports a selected timetable to a CSV file.
+    public static void exportTimetables() {
+
+        if (timetables.isEmpty()) {
+            System.out.println("No timetables have been generated yet.");
+            return;
+        }
+
+        System.out.println("_________________________________________");
+        System.out.println("EXPORT TIMETABLE");
+        System.out.println("_________________________________________");
+
+        // Display available timetables
+        System.out.printf("%-6s %-10s %-30s%n",
+                "ID", "Classes", "Class IDs");
+
+        System.out.println("_________________________________________");
+
+        for (ArrayList<String> timetable : timetables) {
+
+            String timetableId = timetable.getFirst();
+
+            StringBuilder classIds = new StringBuilder();
+
+            for (int i = 1; i < timetable.size(); i++) {
+
+                if (i > 1) {
+                    classIds.append(", ");
+                }
+
+                classIds.append(timetable.get(i));
+            }
+
+            System.out.printf("%-6s %-10s %-30s%n",
+                    timetableId,
+                    timetable.size() - 1,
+                    classIds);
+        }
+
+        System.out.println("_________________________________________");
+        System.out.print("Enter timetable ID to export: ");
+
+        String timetableId = scanner.nextLine().trim();
+
+        ArrayList<String> selectedTimetable = null;
+
+        for (ArrayList<String> timetable : timetables) {
+
+            if (timetable.getFirst().equals(timetableId)) {
+                selectedTimetable = timetable;
+                break;
+            }
+        }
+
+        if (selectedTimetable == null) {
+            System.out.println("Error: Timetable not found.");
+            System.out.println("_________________________________________");
+            return;
+        }
+
+        System.out.print("Enter export file name (without .csv): ");
+        String fileName = scanner.nextLine().trim();
+
+        if (fileName.isEmpty()) {
+            System.out.println("Error: File name cannot be empty.");
+            return;
+        }
+
+        String fullFileName = fileName + ".csv";
+
+        try (java.io.PrintWriter writer =
+                     new java.io.PrintWriter(fullFileName)) {
+
+            // CSV Header
+            writer.println("SessionID,Topic,Availability,Format,Instance,Date,Day,Time,Location");
+
+            // Export each class in timetable
+            for (int i = 1; i < selectedTimetable.size(); i++) {
+
+                String sessionId = selectedTimetable.get(i);
+
+                for (ArrayList<String> classRecord : classes) {
+
+                    if (classRecord.getFirst().equals(sessionId)) {
+
+                        writer.printf("\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\"%n",
+                                classRecord.get(0),
+                                classRecord.get(1),
+                                classRecord.get(2),
+                                classRecord.get(3),
+                                classRecord.get(4),
+                                classRecord.get(5),
+                                classRecord.get(6),
+                                classRecord.get(7),
+                                classRecord.get(8));
+
+                        break;
+                    }
+                }
+            }
+
+            System.out.println("_________________________________________");
+            System.out.println("Timetable exported successfully!");
+            System.out.println("Export file: " + fullFileName);
+            System.out.println("Classes exported: " + (selectedTimetable.size() - 1));
+            System.out.println("_________________________________________");
+
+        } catch (IOException e) {
+
+            System.out.println("Error: Failed to export timetable.");
+            System.out.println("Check file permissions and try again.");
+            System.out.println("_________________________________________");
+        }
+    }
 
     /**
      * A command that provides help to a user.
