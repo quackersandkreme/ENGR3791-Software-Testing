@@ -35,7 +35,7 @@ public class UserInputHandler {
         System.out.println(YELLOW + "Type a command and press Enter" + RESET);
         System.out.println();
 
-        while (true) {
+        while (in.hasNextLine()) {
             System.out.print("\nEnter Command: ");
             System.out.flush();
 
