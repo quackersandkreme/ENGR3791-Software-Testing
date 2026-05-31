@@ -11,6 +11,7 @@ public class UserInputHandler {
 
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
+        Application application = new Application(in);
 
         // Opening banner
         System.out.println(PURPLE + """
@@ -51,7 +52,7 @@ public class UserInputHandler {
                 case "importclasses":
                     if (input.length >= 2) {
                         String filePath = line.substring(line.indexOf(" ") + 1).trim();
-                        Application.importClasses(filePath);
+                        application.importClasses(filePath);
                     } else {
                         System.out.println("Error: importClasses requires CSV file path.");
                         System.out.println("Syntax: importClasses path/to/classes.csv");
@@ -59,62 +60,62 @@ public class UserInputHandler {
                     break;
 
                 case "browseclasses":
-                    Application.browseClasses();
+                    application.browseClasses();
                     break;
 
                 case "viewclasses":
-                    Application.viewClasses();
+                    application.viewClasses();
                     break;
 
                 case "searchclasses":
-                    Application.searchClasses();
+                    application.searchClasses();
                     break;
 
                 case "editclasses":
-                    Application.editClasses();
+                    application.editClasses();
                     break;
 
                 case "deleteclasses":
-                    Application.deleteClasses();
+                    application.deleteClasses();
                     break;
 
                 case "browsetimetables":
-                    Application.browseTimetables();
+                    application.browseTimetables();
                     break;
 
                 case "viewtimetables":
-                    Application.viewTimetables();
+                    application.viewTimetables();
                     break;
 
                 case "searchtimetables":
-                    Application.searchTimetables();
+                    application.searchTimetables();
                     break;
 
                 case "edittimetables":
-                    Application.editTimetables();
+                    application.editTimetables();
                     break;
 
                 case "deletetimetables":
-                    Application.deleteTimetables();
+                    application.deleteTimetables();
                     break;
 
                 case "exporttimetables":
-                    Application.exportTimetables();
+                    application.exportTimetables();
                     break;
 
                 case "generatetimetable":
-                    Application.generateTimetable();
+                    application.generateTimetable();
                     break;
 
                 case "exit":
-                    Application.exit();
+                    application.exit();
                     return;
 
                 case "help":
                     if (input.length == 2) {
-                        Application.help(input[1]);
+                        application.help(input[1]);
                     } else if (input.length == 1) {
-                        Application.help();
+                        application.help();
                     } else {
                         System.out.println("You have entered too many arguments to the help command. \nUse help help if you don't know the syntax for the help command.");
                     }

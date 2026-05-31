@@ -11,7 +11,7 @@ public class Application {
      */
 
     // Added global Scanner
-    private static final Scanner scanner = new Scanner(System.in);
+    private static Scanner scanner;
 
     // added sessionId counter
     private static int nextSessionId = 1;
@@ -31,6 +31,10 @@ public class Application {
      */
     private static final String[] commands = {"importClasses", "browseClasses", "viewClasses", "searchClasses", "editClasses", "deleteClasses", "generateTimetable",
             "browseTimetables", "viewTimetables", "searchTimetables", "editTimetables", "deleteTimetables", "exportTimetables", "help", "exit"};
+
+    public Application(Scanner sc) {
+        scanner = sc;
+    }
 
     /**
      * Takes a given file path to a CSV file and imports all the classes contained in it.
@@ -582,7 +586,9 @@ public class Application {
 
         System.out.println("_________________________________________");
         System.out.print("Enter the ID of the class to delete: ");
+
         String idInput = scanner.nextLine().trim();
+
 
         ArrayList<String> selectedClass = null;
         int selectedIndex = -1;
@@ -1862,5 +1868,12 @@ public class Application {
     public static void exit() {
         System.out.println("Closing Student Timetables software now!");
         System.exit(0);
+    }
+
+    public static void setClassesEmpty() {
+        classes.removeAll(classes);
+    }
+    public static void setNextSessionId() {
+        nextSessionId = 1;
     }
 }

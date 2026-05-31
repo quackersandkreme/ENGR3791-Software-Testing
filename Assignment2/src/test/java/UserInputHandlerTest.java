@@ -6,6 +6,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -47,6 +48,7 @@ class UserInputHandlerTest {
     @BeforeEach
     public void setUp() {
         // Reassigns the "standard" output stream to "captureOutputStream".
+        captureOutputStream.reset();
         System.setOut(new PrintStream(captureOutputStream));
     }
 
