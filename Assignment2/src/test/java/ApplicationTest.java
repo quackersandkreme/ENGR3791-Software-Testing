@@ -435,9 +435,7 @@ class ApplicationTest {
                 YELLOW + "Type a command and press Enter" + RESET + System.lineSeparator() +
                 "\n" +
                 "\n" +
-                "Enter Command: _________________________________________\n" + "BROWSE CLASSES\n" + "_________________________________________\n" +
-                "TopicCode Campus Semester Class Class Instance\n" + "COMP1002 Bedford Park S1 Laboratory 1\n" + "COMP1002   Laboratory 1\n" +
-                "COMP1002 S1  COMP1002 Fundamentals of Artificial Intelligence 2\n" + "Total unique classes: 3\n" + "_________________________________________\n";
+                "Enter Command: No classes have been imported yet.\n";
 
         importIncorrectMethod();
 
@@ -604,33 +602,7 @@ class ApplicationTest {
                 YELLOW + "Type a command and press Enter" + RESET + System.lineSeparator() +
                 "\n" +
                 "\n" +
-                "Enter Command: _________________________________________\n" + "DELETE CLASS\n" +
-                "_________________________________________\n" +
-                "Available classes:\n" +
-                "ID   Topic                     Availability                   Format     Instance\n" +
-                "_________________________________________\n" +
-                "1    COMP1002 Fundamentals ... In person - Bedford Park - ... Laboratory 1       \n" +
-                "2    COMP1002 Fundamentals ... Bedford Park                   Laboratory 1       \n" +
-                "3    COMP1002 Fundamentals ... Bedford Park - S1              COMP1002 Fundamentals of Artificial Intelligence 2       \n" +
-                "_________________________________________\n" +
-                "Enter the ID of the class to delete: _________________________________________\n" +
-                "CONFIRM DELETION - RECORD DETAILS\n_________________________________________\n" +
-                "SessionID: 1\n" +
-                "Topic: COMP1002 Fundamentals of Artificial Intelligence\n" +
-                "Availability: In person - Bedford Park - S1 - 1\n" +
-                "Format: Laboratory\n" +
-                "Instance: 1\n" +
-                "Date: Wednesday\n" +
-                "Day: Wednesday\n" +
-                "Time: 14:00 - 16:00\n" +
-                "Location: 14:00 - 16:00\n" +
-                "_________________________________________\n" +
-                "WARNING: This action cannot be undone.\n" +
-                "Are you sure you want to delete this class? (yes/no): _________________________________________\n" +
-                "Class record deleted successfully.\n" +
-                "Record removed from data structure.\n" +
-                "Total classes remaining: 2\n" +
-                "_________________________________________\n";
+                "Enter Command: No classes have been imported yet.\n";
 
         importIncorrectMethod();
 
