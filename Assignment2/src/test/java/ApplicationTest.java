@@ -491,6 +491,650 @@ class ApplicationTest {
     // 05
 
     // 06
+    @Tag("Zachary")
+    @Tag("Critical")
+    @DisplayName("06.1 Call function with existing classes of correct format")
+    @Test
+    void EditclassClassFunctionWithExistingClass(){
+        String input =
+                "editclasses" + System.lineSeparator() +
+                "1" + System.lineSeparator() + //ID
+                "1" + System.lineSeparator() + //Function
+                "New Topic" + System.lineSeparator() + //Value
+                "yes" + System.lineSeparator(); //Confirm
+        ByteArrayInputStream captureInputStream = new ByteArrayInputStream(input.getBytes());
+
+        System.setIn(captureInputStream);
+
+        String expectedOutput = "_________________________________________\n" +
+                "Import completed successfully.\n" +
+                "New records imported: 3\n" +
+                "Existing records updated: 0\n" +
+                "Total class records stored: 3\n" +
+                "_________________________________________\n" +
+                PURPLE + "  _______ _                _        _     _         _____ _      _____\n" +
+                " |__   __(_)              | |      | |   | |       / ____| |    |_   _|\n" +
+                "    | |   _ _ __ ___   ___| |_ __ _| |__ | | ___  | |    | |      | |\n" +
+                "    | |  | | '_ ` _ \\ / _ \\ __/ _` | '_ \\| |/ _ \\ | |    | |      | |\n" +
+                "    | |  | | | | | | |  __/ || (_| | |_) | |  __/ | |____| |____ _| |_\n" +
+                "    |_|  |_|_| |_| |_|\\___|\\__\\__,_|_.__/|_|\\___|  \\_____|______|_____|\n" +
+                RESET + System.lineSeparator() +
+                CYAN + "        TIMETABLE OPTIMISATION CLI" + RESET + System.lineSeparator() +
+                "\n" +
+                GREEN + "Commands:" + RESET + System.lineSeparator() +
+                "  help              - Show all commands\n" +
+                "  help <command>    - Command details\n" +
+                "  exit              - Quit program\n" +
+                "\n" +
+                YELLOW + "Type a command and press Enter" + RESET + System.lineSeparator() +
+                "\n" +
+                "\n" +
+                "Enter Command: _________________________________________\n" +
+                "EDIT CLASS\n" +
+                "_________________________________________\n" +
+        "Available classes:\n" +
+        "ID   Topic                     Availability                   Format     Instance\n" +
+        "_________________________________________\n" +
+        "1    COMP1002 Fundamentals ... In person - Bedford Park - ... Laboratory 1       \n" +
+        "2    COMP1002 Fundamentals ... In person - Bedford Park - ... Laboratory 1       \n" +
+        "3    COMP1002 Fundamentals ... In person - Bedford Park - ... Laboratory 2       \n" +
+        "_________________________________________\n" +
+        "Enter the ID of the class to edit: _________________________________________\n" +
+        "EDITING CLASS ID: 1\n" +
+        "_________________________________________\n" +
+        "Fields available for editing:\n" +
+        "1. Topic\n" +
+        "2. Availability\n" +
+        "3. Class Format\n" +
+        "4. Class Instance\n" +
+        "5. Date\n" +
+        "6. Day\n" +
+        "7. Time\n" +
+        "8. Location\n" +
+        "NOTE: SessionID cannot be modified.\n" +
+        "_________________________________________\n" +
+        "Select field number to edit (1-8): Current Topic: COMP1002 Fundamentals of Artificial Intelligence\n" +
+        "Enter new value: _________________________________________\n" +
+        "CONFIRM CHANGES\n" +
+        "_________________________________________\n" +
+        "Class ID: 1\n" +
+        "Topic: COMP1002 Fundamentals of Artificial Intelligence -> New Topic\n" +
+        "_________________________________________\n" +
+        "Confirm edit? (yes/no): Class record updated successfully.\n" +
+        "_________________________________________\n";
+
+        importCorrectMethod();
+
+        UserInputHandler.main(null);
+
+        //You have to do it like this otherwise JUnit kills you slow!
+        assertEquals(
+                expectedOutput.replace("\r\n", "\n"),
+                captureOutputStream.toString().replace("\r\n", "\n")
+        );
+    }
+
+    @Tag("Zachary")
+    @Tag("Additional")
+    @DisplayName("06.2 Call function with existing classes of incorrect format")
+    @Test
+    void EditclassClassFunctionWithExistingClassIncorrectFormat(){
+        String input =
+                "editclasses" + System.lineSeparator() +
+                "2" + System.lineSeparator() + //ID
+                "1" + System.lineSeparator() + //Function
+                "New Topic" + System.lineSeparator() + //Value
+                "yes" + System.lineSeparator(); //Confirm
+        ByteArrayInputStream captureInputStream = new ByteArrayInputStream(input.getBytes());
+
+        System.setIn(captureInputStream);
+
+        String expectedOutput = "_________________________________________\n" +
+                "Import completed successfully.\n" +
+                "New records imported: 3\n" +
+                "Existing records updated: 0\n" +
+                "Total class records stored: 3\n" +
+                "_________________________________________\n" +
+                PURPLE + "  _______ _                _        _     _         _____ _      _____\n" +
+                " |__   __(_)              | |      | |   | |       / ____| |    |_   _|\n" +
+                "    | |   _ _ __ ___   ___| |_ __ _| |__ | | ___  | |    | |      | |\n" +
+                "    | |  | | '_ ` _ \\ / _ \\ __/ _` | '_ \\| |/ _ \\ | |    | |      | |\n" +
+                "    | |  | | | | | | |  __/ || (_| | |_) | |  __/ | |____| |____ _| |_\n" +
+                "    |_|  |_|_| |_| |_|\\___|\\__\\__,_|_.__/|_|\\___|  \\_____|______|_____|\n" +
+                RESET + System.lineSeparator() +
+                CYAN + "        TIMETABLE OPTIMISATION CLI" + RESET + System.lineSeparator() +
+                "\n" +
+                GREEN + "Commands:" + RESET + System.lineSeparator() +
+                "  help              - Show all commands\n" +
+                "  help <command>    - Command details\n" +
+                "  exit              - Quit program\n" +
+                "\n" +
+                YELLOW + "Type a command and press Enter" + RESET + System.lineSeparator() +
+                "\n" +
+                "\n" +
+                "Enter Command: _________________________________________\n" +
+                "EDIT CLASS\n" +
+                "_________________________________________\n" +
+                "Available classes:\n" +
+                "ID   Topic                     Availability                   Format     Instance\n" +
+                "_________________________________________\n" +
+                "1    COMP1002 Fundamentals ... In person - Bedford Park - ... Laboratory 1       \n" +
+                "2    COMP1002 Fundamentals ... In person - Bedford Park - ... Laboratory 1       \n" +
+                "3    COMP1002 Fundamentals ... In person - Bedford Park - ... Laboratory 2       \n" +
+                "_________________________________________\n" +
+                "Enter the ID of the class to edit: Error: Class with ID 2 not found.\n" +
+                "_________________________________________\n";
+
+        importIncorrectMethod();
+
+        UserInputHandler.main(null);
+
+        //You have to do it like this otherwise JUnit kills you slow!
+        assertEquals(
+                expectedOutput.replace("\r\n", "\n"),
+                captureOutputStream.toString().replace("\r\n", "\n")
+        );
+    }
+
+    @Tag("Zachary")
+    @Tag("Critical")
+    @DisplayName("06.3 Call function with no existing classes")
+    @Test
+    void EditclassClassFunctionWithNoClasses(){
+        String input =
+                "editclasses" + System.lineSeparator();
+        ByteArrayInputStream captureInputStream = new ByteArrayInputStream(input.getBytes());
+        System.setIn(captureInputStream);
+
+        String expectedOutput =
+                PURPLE + "  _______ _                _        _     _         _____ _      _____\n" +
+                        " |__   __(_)              | |      | |   | |       / ____| |    |_   _|\n" +
+                        "    | |   _ _ __ ___   ___| |_ __ _| |__ | | ___  | |    | |      | |\n" +
+                        "    | |  | | '_ ` _ \\ / _ \\ __/ _` | '_ \\| |/ _ \\ | |    | |      | |\n" +
+                        "    | |  | | | | | | |  __/ || (_| | |_) | |  __/ | |____| |____ _| |_\n" +
+                        "    |_|  |_|_| |_| |_|\\___|\\__\\__,_|_.__/|_|\\___|  \\_____|______|_____|\n" +
+                        RESET + System.lineSeparator() +
+                        CYAN + "        TIMETABLE OPTIMISATION CLI" + RESET + System.lineSeparator() +
+                        "\n" +
+                        GREEN + "Commands:" + RESET + System.lineSeparator() +
+                        "  help              - Show all commands\n" +
+                        "  help <command>    - Command details\n" +
+                        "  exit              - Quit program\n" +
+                        "\n" +
+                        YELLOW + "Type a command and press Enter" + RESET + System.lineSeparator() +
+                        "\n" +
+                        "\n" +
+                        "Enter Command: No classes have been imported yet.\n";
+
+        //importCorrectMethod();
+
+        UserInputHandler.main(null);
+
+        //You have to do it like this otherwise JUnit kills you slow!
+        assertEquals(
+                expectedOutput.replace("\r\n", "\n"),
+                captureOutputStream.toString().replace("\r\n", "\n")
+        );
+    }
+
+    @Tag("Zachary")
+    @Tag("Core")
+    @DisplayName("06.4 Enter an incorrect id")
+    @Test
+    void EditclassClassFunctionIncorrectID(){
+        String input =
+                "editclasses" + System.lineSeparator() +
+                        "4" + System.lineSeparator(); //ID
+        ByteArrayInputStream captureInputStream = new ByteArrayInputStream(input.getBytes());
+
+        System.setIn(captureInputStream);
+
+        String expectedOutput = "_________________________________________\n" +
+                "Import completed successfully.\n" +
+                "New records imported: 3\n" +
+                "Existing records updated: 0\n" +
+                "Total class records stored: 3\n" +
+                "_________________________________________\n" +
+                PURPLE + "  _______ _                _        _     _         _____ _      _____\n" +
+                " |__   __(_)              | |      | |   | |       / ____| |    |_   _|\n" +
+                "    | |   _ _ __ ___   ___| |_ __ _| |__ | | ___  | |    | |      | |\n" +
+                "    | |  | | '_ ` _ \\ / _ \\ __/ _` | '_ \\| |/ _ \\ | |    | |      | |\n" +
+                "    | |  | | | | | | |  __/ || (_| | |_) | |  __/ | |____| |____ _| |_\n" +
+                "    |_|  |_|_| |_| |_|\\___|\\__\\__,_|_.__/|_|\\___|  \\_____|______|_____|\n" +
+                RESET + System.lineSeparator() +
+                CYAN + "        TIMETABLE OPTIMISATION CLI" + RESET + System.lineSeparator() +
+                "\n" +
+                GREEN + "Commands:" + RESET + System.lineSeparator() +
+                "  help              - Show all commands\n" +
+                "  help <command>    - Command details\n" +
+                "  exit              - Quit program\n" +
+                "\n" +
+                YELLOW + "Type a command and press Enter" + RESET + System.lineSeparator() +
+                "\n" +
+                "\n" +
+                "Enter Command: _________________________________________\n" +
+                "EDIT CLASS\n" +
+                "_________________________________________\n" +
+                "Available classes:\n" +
+                "ID   Topic                     Availability                   Format     Instance\n" +
+                "_________________________________________\n" +
+                "1    COMP1002 Fundamentals ... In person - Bedford Park - ... Laboratory 1       \n" +
+                "2    COMP1002 Fundamentals ... In person - Bedford Park - ... Laboratory 1       \n" +
+                "3    COMP1002 Fundamentals ... In person - Bedford Park - ... Laboratory 2       \n" +
+                "_________________________________________\n" +
+                "Enter the ID of the class to edit: Error: Class with ID 4 not found.\n" +
+                "_________________________________________\n";
+
+        importCorrectMethod();
+
+        UserInputHandler.main(null);
+
+        //You have to do it like this otherwise JUnit kills you slow!
+        assertEquals(
+                expectedOutput.replace("\r\n", "\n"),
+                captureOutputStream.toString().replace("\r\n", "\n")
+        );
+    }
+
+    @Tag("Zachary")
+    @Tag("Critical")
+    @DisplayName("06.5 Select an existing field number")
+    @Test
+    void EditclassClassFunctionSelectExistingField(){
+        String input =
+                "editclasses" + System.lineSeparator() +
+                        "1" + System.lineSeparator() + //ID
+                        "1" + System.lineSeparator() + //Function
+                        "New Topic" + System.lineSeparator() + //Value
+                        "yes" + System.lineSeparator(); //Confirm
+        ByteArrayInputStream captureInputStream = new ByteArrayInputStream(input.getBytes());
+
+        System.setIn(captureInputStream);
+
+        String expectedOutput = "_________________________________________\n" +
+                "Import completed successfully.\n" +
+                "New records imported: 3\n" +
+                "Existing records updated: 0\n" +
+                "Total class records stored: 3\n" +
+                "_________________________________________\n" +
+                PURPLE + "  _______ _                _        _     _         _____ _      _____\n" +
+                " |__   __(_)              | |      | |   | |       / ____| |    |_   _|\n" +
+                "    | |   _ _ __ ___   ___| |_ __ _| |__ | | ___  | |    | |      | |\n" +
+                "    | |  | | '_ ` _ \\ / _ \\ __/ _` | '_ \\| |/ _ \\ | |    | |      | |\n" +
+                "    | |  | | | | | | |  __/ || (_| | |_) | |  __/ | |____| |____ _| |_\n" +
+                "    |_|  |_|_| |_| |_|\\___|\\__\\__,_|_.__/|_|\\___|  \\_____|______|_____|\n" +
+                RESET + System.lineSeparator() +
+                CYAN + "        TIMETABLE OPTIMISATION CLI" + RESET + System.lineSeparator() +
+                "\n" +
+                GREEN + "Commands:" + RESET + System.lineSeparator() +
+                "  help              - Show all commands\n" +
+                "  help <command>    - Command details\n" +
+                "  exit              - Quit program\n" +
+                "\n" +
+                YELLOW + "Type a command and press Enter" + RESET + System.lineSeparator() +
+                "\n" +
+                "\n" +
+                "Enter Command: _________________________________________\n" +
+                "EDIT CLASS\n" +
+                "_________________________________________\n" +
+                "Available classes:\n" +
+                "ID   Topic                     Availability                   Format     Instance\n" +
+                "_________________________________________\n" +
+                "1    COMP1002 Fundamentals ... In person - Bedford Park - ... Laboratory 1       \n" +
+                "2    COMP1002 Fundamentals ... In person - Bedford Park - ... Laboratory 1       \n" +
+                "3    COMP1002 Fundamentals ... In person - Bedford Park - ... Laboratory 2       \n" +
+                "_________________________________________\n" +
+                "Enter the ID of the class to edit: _________________________________________\n" +
+                "EDITING CLASS ID: 1\n" +
+                "_________________________________________\n" +
+                "Fields available for editing:\n" +
+                "1. Topic\n" +
+                "2. Availability\n" +
+                "3. Class Format\n" +
+                "4. Class Instance\n" +
+                "5. Date\n" +
+                "6. Day\n" +
+                "7. Time\n" +
+                "8. Location\n" +
+                "NOTE: SessionID cannot be modified.\n" +
+                "_________________________________________\n" +
+                "Select field number to edit (1-8): Current Topic: COMP1002 Fundamentals of Artificial Intelligence\n" +
+                "Enter new value: _________________________________________\n" +
+                "CONFIRM CHANGES\n" +
+                "_________________________________________\n" +
+                "Class ID: 1\n" +
+                "Topic: COMP1002 Fundamentals of Artificial Intelligence -> New Topic\n" +
+                "_________________________________________\n" +
+                "Confirm edit? (yes/no): Class record updated successfully.\n" +
+                "_________________________________________\n";
+
+        importCorrectMethod();
+
+        UserInputHandler.main(null);
+
+        //You have to do it like this otherwise JUnit kills you slow!
+        assertEquals(
+                expectedOutput.replace("\r\n", "\n"),
+                captureOutputStream.toString().replace("\r\n", "\n")
+        );
+    }
+
+    @Tag("Zachary")
+    @Tag("Core")
+    @DisplayName("06.6 Select a non-existing field number")
+    @Test
+    void EditclassClassFunctionSelectNonExistingField(){
+        String input =
+                "editclasses" + System.lineSeparator() +
+                        "1" + System.lineSeparator() + //ID
+                        "9" + System.lineSeparator(); //Function
+        ByteArrayInputStream captureInputStream = new ByteArrayInputStream(input.getBytes());
+
+        System.setIn(captureInputStream);
+
+        String expectedOutput = "_________________________________________\n" +
+                "Import completed successfully.\n" +
+                "New records imported: 3\n" +
+                "Existing records updated: 0\n" +
+                "Total class records stored: 3\n" +
+                "_________________________________________\n" +
+                PURPLE + "  _______ _                _        _     _         _____ _      _____\n" +
+                " |__   __(_)              | |      | |   | |       / ____| |    |_   _|\n" +
+                "    | |   _ _ __ ___   ___| |_ __ _| |__ | | ___  | |    | |      | |\n" +
+                "    | |  | | '_ ` _ \\ / _ \\ __/ _` | '_ \\| |/ _ \\ | |    | |      | |\n" +
+                "    | |  | | | | | | |  __/ || (_| | |_) | |  __/ | |____| |____ _| |_\n" +
+                "    |_|  |_|_| |_| |_|\\___|\\__\\__,_|_.__/|_|\\___|  \\_____|______|_____|\n" +
+                RESET + System.lineSeparator() +
+                CYAN + "        TIMETABLE OPTIMISATION CLI" + RESET + System.lineSeparator() +
+                "\n" +
+                GREEN + "Commands:" + RESET + System.lineSeparator() +
+                "  help              - Show all commands\n" +
+                "  help <command>    - Command details\n" +
+                "  exit              - Quit program\n" +
+                "\n" +
+                YELLOW + "Type a command and press Enter" + RESET + System.lineSeparator() +
+                "\n" +
+                "\n" +
+                "Enter Command: _________________________________________\n" +
+                "EDIT CLASS\n" +
+                "_________________________________________\n" +
+                "Available classes:\n" +
+                "ID   Topic                     Availability                   Format     Instance\n" +
+                "_________________________________________\n" +
+                "1    COMP1002 Fundamentals ... In person - Bedford Park - ... Laboratory 1       \n" +
+                "2    COMP1002 Fundamentals ... In person - Bedford Park - ... Laboratory 1       \n" +
+                "3    COMP1002 Fundamentals ... In person - Bedford Park - ... Laboratory 2       \n" +
+                "_________________________________________\n" +
+                "Enter the ID of the class to edit: _________________________________________\n" +
+                "EDITING CLASS ID: 1\n" +
+                "_________________________________________\n" +
+                "Fields available for editing:\n" +
+                "1. Topic\n" +
+                "2. Availability\n" +
+                "3. Class Format\n" +
+                "4. Class Instance\n" +
+                "5. Date\n" +
+                "6. Day\n" +
+                "7. Time\n" +
+                "8. Location\n" +
+                "NOTE: SessionID cannot be modified.\n" +
+                "_________________________________________\n" +
+                "Select field number to edit (1-8): Error: Invalid field number.\n" +
+                "_________________________________________\n";
+
+        importCorrectMethod();
+
+        UserInputHandler.main(null);
+
+        //You have to do it like this otherwise JUnit kills you slow!
+        assertEquals(
+                expectedOutput.replace("\r\n", "\n"),
+                captureOutputStream.toString().replace("\r\n", "\n")
+        );
+    }
+
+    @Tag("Zachary")
+    @Tag("Critical")
+    @DisplayName("06.7 Enter a value when asked to and confirm it")
+    @Test
+    void EditclassClassFunctionEnterNumAtConfirm(){
+        String input =
+                "editclasses" + System.lineSeparator() +
+                        "1" + System.lineSeparator() + //ID
+                        "1" + System.lineSeparator() + //Function
+                        "New Topic" + System.lineSeparator() + //Value
+                        "New Topic" + System.lineSeparator(); //Confirm
+        ByteArrayInputStream captureInputStream = new ByteArrayInputStream(input.getBytes());
+
+        System.setIn(captureInputStream);
+
+        String expectedOutput = "_________________________________________\n" +
+                "Import completed successfully.\n" +
+                "New records imported: 3\n" +
+                "Existing records updated: 0\n" +
+                "Total class records stored: 3\n" +
+                "_________________________________________\n" +
+                PURPLE + "  _______ _                _        _     _         _____ _      _____\n" +
+                " |__   __(_)              | |      | |   | |       / ____| |    |_   _|\n" +
+                "    | |   _ _ __ ___   ___| |_ __ _| |__ | | ___  | |    | |      | |\n" +
+                "    | |  | | '_ ` _ \\ / _ \\ __/ _` | '_ \\| |/ _ \\ | |    | |      | |\n" +
+                "    | |  | | | | | | |  __/ || (_| | |_) | |  __/ | |____| |____ _| |_\n" +
+                "    |_|  |_|_| |_| |_|\\___|\\__\\__,_|_.__/|_|\\___|  \\_____|______|_____|\n" +
+                RESET + System.lineSeparator() +
+                CYAN + "        TIMETABLE OPTIMISATION CLI" + RESET + System.lineSeparator() +
+                "\n" +
+                GREEN + "Commands:" + RESET + System.lineSeparator() +
+                "  help              - Show all commands\n" +
+                "  help <command>    - Command details\n" +
+                "  exit              - Quit program\n" +
+                "\n" +
+                YELLOW + "Type a command and press Enter" + RESET + System.lineSeparator() +
+                "\n" +
+                "\n" +
+                "Enter Command: _________________________________________\n" +
+                "EDIT CLASS\n" +
+                "_________________________________________\n" +
+                "Available classes:\n" +
+                "ID   Topic                     Availability                   Format     Instance\n" +
+                "_________________________________________\n" +
+                "1    COMP1002 Fundamentals ... In person - Bedford Park - ... Laboratory 1       \n" +
+                "2    COMP1002 Fundamentals ... In person - Bedford Park - ... Laboratory 1       \n" +
+                "3    COMP1002 Fundamentals ... In person - Bedford Park - ... Laboratory 2       \n" +
+                "_________________________________________\n" +
+                "Enter the ID of the class to edit: _________________________________________\n" +
+                "EDITING CLASS ID: 1\n" +
+                "_________________________________________\n" +
+                "Fields available for editing:\n" +
+                "1. Topic\n" +
+                "2. Availability\n" +
+                "3. Class Format\n" +
+                "4. Class Instance\n" +
+                "5. Date\n" +
+                "6. Day\n" +
+                "7. Time\n" +
+                "8. Location\n" +
+                "NOTE: SessionID cannot be modified.\n" +
+                "_________________________________________\n" +
+                "Select field number to edit (1-8): Current Topic: COMP1002 Fundamentals of Artificial Intelligence\n" +
+                "Enter new value: _________________________________________\n" +
+                "CONFIRM CHANGES\n" +
+                "_________________________________________\n" +
+                "Class ID: 1\n" +
+                "Topic: COMP1002 Fundamentals of Artificial Intelligence -> New Topic\n" +
+                "_________________________________________\n" +
+                "Confirm edit? (yes/no): Edit cancelled. No changes were made.\n" +
+                "_________________________________________\n";
+
+        importCorrectMethod();
+
+        UserInputHandler.main(null);
+
+        //You have to do it like this otherwise JUnit kills you slow!
+        assertEquals(
+                expectedOutput.replace("\r\n", "\n"),
+                captureOutputStream.toString().replace("\r\n", "\n")
+        );
+    }
+
+    @Tag("Zachary")
+    @Tag("Core")
+    @DisplayName("06.8 Enter no value when asked to")
+    @Test
+    void EditclassClassFunctionEnterNovalue(){
+        String input =
+                "editclasses" + System.lineSeparator() +
+                        "1" + System.lineSeparator() + //ID
+                        "1" + System.lineSeparator() + //Function
+                        "" + System.lineSeparator(); //Value
+        ByteArrayInputStream captureInputStream = new ByteArrayInputStream(input.getBytes());
+
+        System.setIn(captureInputStream);
+
+        String expectedOutput = "_________________________________________\n" +
+                "Import completed successfully.\n" +
+                "New records imported: 3\n" +
+                "Existing records updated: 0\n" +
+                "Total class records stored: 3\n" +
+                "_________________________________________\n" +
+                PURPLE + "  _______ _                _        _     _         _____ _      _____\n" +
+                " |__   __(_)              | |      | |   | |       / ____| |    |_   _|\n" +
+                "    | |   _ _ __ ___   ___| |_ __ _| |__ | | ___  | |    | |      | |\n" +
+                "    | |  | | '_ ` _ \\ / _ \\ __/ _` | '_ \\| |/ _ \\ | |    | |      | |\n" +
+                "    | |  | | | | | | |  __/ || (_| | |_) | |  __/ | |____| |____ _| |_\n" +
+                "    |_|  |_|_| |_| |_|\\___|\\__\\__,_|_.__/|_|\\___|  \\_____|______|_____|\n" +
+                RESET + System.lineSeparator() +
+                CYAN + "        TIMETABLE OPTIMISATION CLI" + RESET + System.lineSeparator() +
+                "\n" +
+                GREEN + "Commands:" + RESET + System.lineSeparator() +
+                "  help              - Show all commands\n" +
+                "  help <command>    - Command details\n" +
+                "  exit              - Quit program\n" +
+                "\n" +
+                YELLOW + "Type a command and press Enter" + RESET + System.lineSeparator() +
+                "\n" +
+                "\n" +
+                "Enter Command: _________________________________________\n" +
+                "EDIT CLASS\n" +
+                "_________________________________________\n" +
+                "Available classes:\n" +
+                "ID   Topic                     Availability                   Format     Instance\n" +
+                "_________________________________________\n" +
+                "1    COMP1002 Fundamentals ... In person - Bedford Park - ... Laboratory 1       \n" +
+                "2    COMP1002 Fundamentals ... In person - Bedford Park - ... Laboratory 1       \n" +
+                "3    COMP1002 Fundamentals ... In person - Bedford Park - ... Laboratory 2       \n" +
+                "_________________________________________\n" +
+                "Enter the ID of the class to edit: _________________________________________\n" +
+                "EDITING CLASS ID: 1\n" +
+                "_________________________________________\n" +
+                "Fields available for editing:\n" +
+                "1. Topic\n" +
+                "2. Availability\n" +
+                "3. Class Format\n" +
+                "4. Class Instance\n" +
+                "5. Date\n" +
+                "6. Day\n" +
+                "7. Time\n" +
+                "8. Location\n" +
+                "NOTE: SessionID cannot be modified.\n" +
+                "_________________________________________\n" +
+                "Select field number to edit (1-8): Current Topic: COMP1002 Fundamentals of Artificial Intelligence\n" +
+                "Enter new value: Error: New value cannot be empty.\n" +
+                "_________________________________________\n";
+
+        importCorrectMethod();
+
+        UserInputHandler.main(null);
+
+        //You have to do it like this otherwise JUnit kills you slow!
+        assertEquals(
+                expectedOutput.replace("\r\n", "\n"),
+                captureOutputStream.toString().replace("\r\n", "\n")
+        );
+    }
+
+    @Tag("Zachary")
+    @Tag("Core")
+    @DisplayName("06.9 Enter a value when asked to and do not confirm it")
+    @Test
+    void EditclassClassFunctionEnterValueAndNotConfirm(){
+        String input =
+                "editclasses" + System.lineSeparator() +
+                        "1" + System.lineSeparator() + //ID
+                        "1" + System.lineSeparator() + //Function
+                        "New Topic" + System.lineSeparator() + //Value
+                        "" + System.lineSeparator(); //Confirm
+        ByteArrayInputStream captureInputStream = new ByteArrayInputStream(input.getBytes());
+
+        System.setIn(captureInputStream);
+
+        String expectedOutput = "_________________________________________\n" +
+                "Import completed successfully.\n" +
+                "New records imported: 3\n" +
+                "Existing records updated: 0\n" +
+                "Total class records stored: 3\n" +
+                "_________________________________________\n" +
+                PURPLE + "  _______ _                _        _     _         _____ _      _____\n" +
+                " |__   __(_)              | |      | |   | |       / ____| |    |_   _|\n" +
+                "    | |   _ _ __ ___   ___| |_ __ _| |__ | | ___  | |    | |      | |\n" +
+                "    | |  | | '_ ` _ \\ / _ \\ __/ _` | '_ \\| |/ _ \\ | |    | |      | |\n" +
+                "    | |  | | | | | | |  __/ || (_| | |_) | |  __/ | |____| |____ _| |_\n" +
+                "    |_|  |_|_| |_| |_|\\___|\\__\\__,_|_.__/|_|\\___|  \\_____|______|_____|\n" +
+                RESET + System.lineSeparator() +
+                CYAN + "        TIMETABLE OPTIMISATION CLI" + RESET + System.lineSeparator() +
+                "\n" +
+                GREEN + "Commands:" + RESET + System.lineSeparator() +
+                "  help              - Show all commands\n" +
+                "  help <command>    - Command details\n" +
+                "  exit              - Quit program\n" +
+                "\n" +
+                YELLOW + "Type a command and press Enter" + RESET + System.lineSeparator() +
+                "\n" +
+                "\n" +
+                "Enter Command: _________________________________________\n" +
+                "EDIT CLASS\n" +
+                "_________________________________________\n" +
+                "Available classes:\n" +
+                "ID   Topic                     Availability                   Format     Instance\n" +
+                "_________________________________________\n" +
+                "1    COMP1002 Fundamentals ... In person - Bedford Park - ... Laboratory 1       \n" +
+                "2    COMP1002 Fundamentals ... In person - Bedford Park - ... Laboratory 1       \n" +
+                "3    COMP1002 Fundamentals ... In person - Bedford Park - ... Laboratory 2       \n" +
+                "_________________________________________\n" +
+                "Enter the ID of the class to edit: _________________________________________\n" +
+                "EDITING CLASS ID: 1\n" +
+                "_________________________________________\n" +
+                "Fields available for editing:\n" +
+                "1. Topic\n" +
+                "2. Availability\n" +
+                "3. Class Format\n" +
+                "4. Class Instance\n" +
+                "5. Date\n" +
+                "6. Day\n" +
+                "7. Time\n" +
+                "8. Location\n" +
+                "NOTE: SessionID cannot be modified.\n" +
+                "_________________________________________\n" +
+                "Select field number to edit (1-8): Current Topic: COMP1002 Fundamentals of Artificial Intelligence\n" +
+                "Enter new value: _________________________________________\n" +
+                "CONFIRM CHANGES\n" +
+                "_________________________________________\n" +
+                "Class ID: 1\n" +
+                "Topic: COMP1002 Fundamentals of Artificial Intelligence -> New Topic\n" +
+                "_________________________________________\n" +
+                "Confirm edit? (yes/no): Edit cancelled. No changes were made.\n" +
+                "_________________________________________\n";
+
+        importCorrectMethod();
+
+        UserInputHandler.main(null);
+
+        //You have to do it like this otherwise JUnit kills you slow!
+        assertEquals(
+                expectedOutput.replace("\r\n", "\n"),
+                captureOutputStream.toString().replace("\r\n", "\n")
+        );
+    }
+
 
     // 07
     @Tag("Charlie")
@@ -790,16 +1434,1149 @@ class ApplicationTest {
     // 10
 
     // 11
+    @Tag("Zachary")
+    @Tag("Critical")
+    @DisplayName("11.1 Search timetable by valid timetable ID")
+    @Test
+    void SearchTimetableWithValidID(){
+        String input =
+                "generatetimetable" + System.lineSeparator() +
+                "1" + System.lineSeparator() + //generate table
+                "searchtimetables" + System.lineSeparator() +
+                "1" + System.lineSeparator() + //Filter
+                "" + System.lineSeparator() + //Filter
+                "" + System.lineSeparator() + //Filter
+                "" + System.lineSeparator(); //Filter
+        ByteArrayInputStream captureInputStream = new ByteArrayInputStream(input.getBytes());
+
+        System.setIn(captureInputStream);
+
+        String expectedOutput = "_________________________________________\n" +
+                "Import completed successfully.\n" +
+                "New records imported: 3\n" +
+                "Existing records updated: 0\n" +
+                "Total class records stored: 3\n" +
+                "_________________________________________\n" +
+                PURPLE + "  _______ _                _        _     _         _____ _      _____\n" +
+                " |__   __(_)              | |      | |   | |       / ____| |    |_   _|\n" +
+                "    | |   _ _ __ ___   ___| |_ __ _| |__ | | ___  | |    | |      | |\n" +
+                "    | |  | | '_ ` _ \\ / _ \\ __/ _` | '_ \\| |/ _ \\ | |    | |      | |\n" +
+                "    | |  | | | | | | |  __/ || (_| | |_) | |  __/ | |____| |____ _| |_\n" +
+                "    |_|  |_|_| |_| |_|\\___|\\__\\__,_|_.__/|_|\\___|  \\_____|______|_____|\n" +
+                RESET + System.lineSeparator() +
+                CYAN + "        TIMETABLE OPTIMISATION CLI" + RESET + System.lineSeparator() +
+                "\n" +
+                GREEN + "Commands:" + RESET + System.lineSeparator() +
+                "  help              - Show all commands\n" +
+                "  help <command>    - Command details\n" +
+                "  exit              - Quit program\n" +
+                "\n" +
+                YELLOW + "Type a command and press Enter" + RESET + System.lineSeparator() +
+                "\n" +
+                "\n" +
+                "Enter Command: _________________________________________\n" +
+                "GENERATE TIMETABLE\n" +
+                "_________________________________________\n" +
+                "View and select classes to add to your timetable.\n" +
+                "_________________________________________\n" +
+                "ID   Topic                     Format     Day      Time       Location            \n" +
+                "_________________________________________\n" +
+                "1    COMP1002 Fundamentals ... Laboratory Wednesday 14:00 - 16:00 Info Sci & Tech, ...\n" +
+                "2    COMP1002 Fundamentals ... Laboratory Wednesday 14:00 - 16:00 Info Sci & Tech, ...\n" +
+                "3    COMP1002 Fundamentals ... Laboratory Tuesday  14:00 - 16:00 Info Sci & Tech, ...\n" +
+                "_________________________________________\n" +
+                "Enter class IDs to add to timetable (comma-separated):\n" +
+                "Example: 1,3,5\n" +
+                "IDs: _________________________________________\n" +
+                "TIMETABLE VALIDATION\n" +
+                "_________________________________________\n" +
+                "✓ No time clashes detected.\n" +
+                "✓ All campus gap requirements met.\n" +
+                "_________________________________________\n" +
+                "Timetable created successfully!\n" +
+                "Timetable ID: 1\n" +
+                "Classes added: 1\n" +
+                "_________________________________________\n\n" +
+                "Enter Command: _________________________________________\n" +
+                "SEARCH TIMETABLES\n" +
+                "_________________________________________\n" +
+                "Leave fields blank to skip filtering.\n" +
+                "_________________________________________\n" +
+                "Timetable ID: Class ID included: Topic (partial match): Day (exact match): _________________________________________\n" +
+                "MATCHING TIMETABLES\n" +
+                "_________________________________________\n" +
+                "ID     Classes    Class IDs                     \n" +
+                "_________________________________________\n" +
+                "1      1          1                             \n" +
+                "_________________________________________\n" +
+                "Total matches: 1\n" +
+                "_________________________________________\n";
+
+        importCorrectMethod();
+
+
+        UserInputHandler.main(null);
+
+        //You have to do it like this otherwise JUnit kills you slow!
+        assertEquals(
+                expectedOutput.replace("\r\n", "\n"),
+                captureOutputStream.toString().replace("\r\n", "\n")
+        );
+    }
+
+    @Tag("Zachary")
+    @Tag("Core")
+    @DisplayName("11.2 Search timetable by invalid timetable ID")
+    @Test
+    void SearchTimetableWithInvalidID(){
+        String input =
+                "generatetimetable" + System.lineSeparator() +
+                        "1" + System.lineSeparator() + //generate table
+                        "searchtimetables" + System.lineSeparator() +
+                        "2" + System.lineSeparator() + //Filter
+                        "" + System.lineSeparator() + //Filter
+                        "" + System.lineSeparator() + //Filter
+                        "" + System.lineSeparator(); //Filter
+        ByteArrayInputStream captureInputStream = new ByteArrayInputStream(input.getBytes());
+
+        System.setIn(captureInputStream);
+
+        String expectedOutput = "_________________________________________\n" +
+                "Import completed successfully.\n" +
+                "New records imported: 3\n" +
+                "Existing records updated: 0\n" +
+                "Total class records stored: 3\n" +
+                "_________________________________________\n" +
+                PURPLE + "  _______ _                _        _     _         _____ _      _____\n" +
+                " |__   __(_)              | |      | |   | |       / ____| |    |_   _|\n" +
+                "    | |   _ _ __ ___   ___| |_ __ _| |__ | | ___  | |    | |      | |\n" +
+                "    | |  | | '_ ` _ \\ / _ \\ __/ _` | '_ \\| |/ _ \\ | |    | |      | |\n" +
+                "    | |  | | | | | | |  __/ || (_| | |_) | |  __/ | |____| |____ _| |_\n" +
+                "    |_|  |_|_| |_| |_|\\___|\\__\\__,_|_.__/|_|\\___|  \\_____|______|_____|\n" +
+                RESET + System.lineSeparator() +
+                CYAN + "        TIMETABLE OPTIMISATION CLI" + RESET + System.lineSeparator() +
+                "\n" +
+                GREEN + "Commands:" + RESET + System.lineSeparator() +
+                "  help              - Show all commands\n" +
+                "  help <command>    - Command details\n" +
+                "  exit              - Quit program\n" +
+                "\n" +
+                YELLOW + "Type a command and press Enter" + RESET + System.lineSeparator() +
+                "\n" +
+                "\n" +
+                "Enter Command: _________________________________________\n" +
+                "GENERATE TIMETABLE\n" +
+                "_________________________________________\n" +
+                "View and select classes to add to your timetable.\n" +
+                "_________________________________________\n" +
+                "ID   Topic                     Format     Day      Time       Location            \n" +
+                "_________________________________________\n" +
+                "1    COMP1002 Fundamentals ... Laboratory Wednesday 14:00 - 16:00 Info Sci & Tech, ...\n" +
+                "2    COMP1002 Fundamentals ... Laboratory Wednesday 14:00 - 16:00 Info Sci & Tech, ...\n" +
+                "3    COMP1002 Fundamentals ... Laboratory Tuesday  14:00 - 16:00 Info Sci & Tech, ...\n" +
+                "_________________________________________\n" +
+                "Enter class IDs to add to timetable (comma-separated):\n" +
+                "Example: 1,3,5\n" +
+                "IDs: _________________________________________\n" +
+                "TIMETABLE VALIDATION\n" +
+                "_________________________________________\n" +
+                "✓ No time clashes detected.\n" +
+                "✓ All campus gap requirements met.\n" +
+                "_________________________________________\n" +
+                "Timetable created successfully!\n" +
+                "Timetable ID: 1\n" +
+                "Classes added: 1\n" +
+                "_________________________________________\n\n" +
+                "Enter Command: _________________________________________\n" +
+                "SEARCH TIMETABLES\n" +
+                "_________________________________________\n" +
+                "Leave fields blank to skip filtering.\n" +
+                "_________________________________________\n" +
+                "Timetable ID: Class ID included: Topic (partial match): Day (exact match): _________________________________________\n" +
+                "No timetables matched your search criteria.\n" +
+                "_________________________________________\n";
+
+        importCorrectMethod();
+
+
+        UserInputHandler.main(null);
+
+        //You have to do it like this otherwise JUnit kills you slow!
+        assertEquals(
+                expectedOutput.replace("\r\n", "\n"),
+                captureOutputStream.toString().replace("\r\n", "\n")
+        );
+    }
+
+    @Tag("Zachary")
+    @Tag("Critical")
+    @DisplayName("11.3 Search timetable with no timetables created")
+    @Test
+    void SearchTimetableWithNoTimeables(){
+        String input = "searchtimetables";
+        ByteArrayInputStream captureInputStream = new ByteArrayInputStream(input.getBytes());
+
+        System.setIn(captureInputStream);
+
+        String expectedOutput = "_________________________________________\n" +
+                "Import completed successfully.\n" +
+                "New records imported: 3\n" +
+                "Existing records updated: 0\n" +
+                "Total class records stored: 3\n" +
+                "_________________________________________\n" +
+                PURPLE + "  _______ _                _        _     _         _____ _      _____\n" +
+                " |__   __(_)              | |      | |   | |       / ____| |    |_   _|\n" +
+                "    | |   _ _ __ ___   ___| |_ __ _| |__ | | ___  | |    | |      | |\n" +
+                "    | |  | | '_ ` _ \\ / _ \\ __/ _` | '_ \\| |/ _ \\ | |    | |      | |\n" +
+                "    | |  | | | | | | |  __/ || (_| | |_) | |  __/ | |____| |____ _| |_\n" +
+                "    |_|  |_|_| |_| |_|\\___|\\__\\__,_|_.__/|_|\\___|  \\_____|______|_____|\n" +
+                RESET + System.lineSeparator() +
+                CYAN + "        TIMETABLE OPTIMISATION CLI" + RESET + System.lineSeparator() +
+                "\n" +
+                GREEN + "Commands:" + RESET + System.lineSeparator() +
+                "  help              - Show all commands\n" +
+                "  help <command>    - Command details\n" +
+                "  exit              - Quit program\n" +
+                "\n" +
+                YELLOW + "Type a command and press Enter" + RESET + System.lineSeparator() +
+                "\n" +
+                "\n" +
+                "Enter Command: No timetables have been generated yet.\n";
+
+        importIncorrectMethod();
+
+        UserInputHandler.main(null);
+
+        //You have to do it like this otherwise JUnit kills you slow!
+        assertEquals(
+                expectedOutput.replace("\r\n", "\n"),
+                captureOutputStream.toString().replace("\r\n", "\n")
+        );
+    }
+
+    @Tag("Zachary")
+    @Tag("Core")
+    @DisplayName("11.4 Search timetable by class ID inclusion")
+    @Test
+    void SearchTimetableWithClassIDInclusion(){
+        String input =
+                "generatetimetable" + System.lineSeparator() +
+                        "1,3" + System.lineSeparator() + //generate table
+                        "searchtimetables" + System.lineSeparator() +
+                        "" + System.lineSeparator() + //Filter
+                        "3" + System.lineSeparator() + //Filter
+                        "" + System.lineSeparator() + //Filter
+                        "" + System.lineSeparator(); //Filter
+        ByteArrayInputStream captureInputStream = new ByteArrayInputStream(input.getBytes());
+
+        System.setIn(captureInputStream);
+
+        String expectedOutput = "_________________________________________\n" +
+                "Import completed successfully.\n" +
+                "New records imported: 3\n" +
+                "Existing records updated: 0\n" +
+                "Total class records stored: 3\n" +
+                "_________________________________________\n" +
+                PURPLE + "  _______ _                _        _     _         _____ _      _____\n" +
+                " |__   __(_)              | |      | |   | |       / ____| |    |_   _|\n" +
+                "    | |   _ _ __ ___   ___| |_ __ _| |__ | | ___  | |    | |      | |\n" +
+                "    | |  | | '_ ` _ \\ / _ \\ __/ _` | '_ \\| |/ _ \\ | |    | |      | |\n" +
+                "    | |  | | | | | | |  __/ || (_| | |_) | |  __/ | |____| |____ _| |_\n" +
+                "    |_|  |_|_| |_| |_|\\___|\\__\\__,_|_.__/|_|\\___|  \\_____|______|_____|\n" +
+                RESET + System.lineSeparator() +
+                CYAN + "        TIMETABLE OPTIMISATION CLI" + RESET + System.lineSeparator() +
+                "\n" +
+                GREEN + "Commands:" + RESET + System.lineSeparator() +
+                "  help              - Show all commands\n" +
+                "  help <command>    - Command details\n" +
+                "  exit              - Quit program\n" +
+                "\n" +
+                YELLOW + "Type a command and press Enter" + RESET + System.lineSeparator() +
+                "\n" +
+                "\n" +
+                "Enter Command: _________________________________________\n" +
+                "GENERATE TIMETABLE\n" +
+                "_________________________________________\n" +
+                "View and select classes to add to your timetable.\n" +
+                "_________________________________________\n" +
+                "ID   Topic                     Format     Day      Time       Location            \n" +
+                "_________________________________________\n" +
+                "1    COMP1002 Fundamentals ... Laboratory Wednesday 14:00 - 16:00 Info Sci & Tech, ...\n" +
+                "2    COMP1002 Fundamentals ... Laboratory Wednesday 14:00 - 16:00 Info Sci & Tech, ...\n" +
+                "3    COMP1002 Fundamentals ... Laboratory Tuesday  14:00 - 16:00 Info Sci & Tech, ...\n" +
+                "_________________________________________\n" +
+                "Enter class IDs to add to timetable (comma-separated):\n" +
+                "Example: 1,3,5\n" +
+                "IDs: _________________________________________\n" +
+                "TIMETABLE VALIDATION\n" +
+                "_________________________________________\n" +
+                "✓ No time clashes detected.\n" +
+                "✓ All campus gap requirements met.\n" +
+                "_________________________________________\n" +
+                "Timetable created successfully!\n" +
+                "Timetable ID: 1\n" +
+                "Classes added: 2\n" +
+                "_________________________________________\n\n" +
+                "Enter Command: _________________________________________\n" +
+                "SEARCH TIMETABLES\n" +
+                "_________________________________________\n" +
+                "Leave fields blank to skip filtering.\n" +
+                "_________________________________________\n" +
+                "Timetable ID: Class ID included: Topic (partial match): Day (exact match): _________________________________________\n" +
+                "MATCHING TIMETABLES\n" +
+                "_________________________________________\n" +
+                "ID     Classes    Class IDs                     \n" +
+                "_________________________________________\n" +
+                "1      2          1, 3                          \n" +
+                "_________________________________________\n" +
+                "Total matches: 1\n" +
+                "_________________________________________\n";
+
+        importCorrectMethod();
+
+
+        UserInputHandler.main(null);
+
+        //You have to do it like this otherwise JUnit kills you slow!
+        assertEquals(
+                expectedOutput.replace("\r\n", "\n"),
+                captureOutputStream.toString().replace("\r\n", "\n")
+        );
+    }
+
+    @Tag("Zachary")
+    @Tag("Core")
+    @DisplayName("11.5 Search timetable by topic partial match")
+    @Test
+    void SearchTimetableWithTopicPartialMatch(){
+        String input =
+                "generatetimetable" + System.lineSeparator() +
+                        "1" + System.lineSeparator() + //generate table
+                        "searchtimetables" + System.lineSeparator() +
+                        "" + System.lineSeparator() + //Filter
+                        "" + System.lineSeparator() + //Filter
+                        "COMP" + System.lineSeparator() + //Filter
+                        "" + System.lineSeparator(); //Filter
+        ByteArrayInputStream captureInputStream = new ByteArrayInputStream(input.getBytes());
+
+        System.setIn(captureInputStream);
+
+        String expectedOutput = "_________________________________________\n" +
+                "Import completed successfully.\n" +
+                "New records imported: 3\n" +
+                "Existing records updated: 0\n" +
+                "Total class records stored: 3\n" +
+                "_________________________________________\n" +
+                PURPLE + "  _______ _                _        _     _         _____ _      _____\n" +
+                " |__   __(_)              | |      | |   | |       / ____| |    |_   _|\n" +
+                "    | |   _ _ __ ___   ___| |_ __ _| |__ | | ___  | |    | |      | |\n" +
+                "    | |  | | '_ ` _ \\ / _ \\ __/ _` | '_ \\| |/ _ \\ | |    | |      | |\n" +
+                "    | |  | | | | | | |  __/ || (_| | |_) | |  __/ | |____| |____ _| |_\n" +
+                "    |_|  |_|_| |_| |_|\\___|\\__\\__,_|_.__/|_|\\___|  \\_____|______|_____|\n" +
+                RESET + System.lineSeparator() +
+                CYAN + "        TIMETABLE OPTIMISATION CLI" + RESET + System.lineSeparator() +
+                "\n" +
+                GREEN + "Commands:" + RESET + System.lineSeparator() +
+                "  help              - Show all commands\n" +
+                "  help <command>    - Command details\n" +
+                "  exit              - Quit program\n" +
+                "\n" +
+                YELLOW + "Type a command and press Enter" + RESET + System.lineSeparator() +
+                "\n" +
+                "\n" +
+                "Enter Command: _________________________________________\n" +
+                "GENERATE TIMETABLE\n" +
+                "_________________________________________\n" +
+                "View and select classes to add to your timetable.\n" +
+                "_________________________________________\n" +
+                "ID   Topic                     Format     Day      Time       Location            \n" +
+                "_________________________________________\n" +
+                "1    COMP1002 Fundamentals ... Laboratory Wednesday 14:00 - 16:00 Info Sci & Tech, ...\n" +
+                "2    COMP1002 Fundamentals ... Laboratory Wednesday 14:00 - 16:00 Info Sci & Tech, ...\n" +
+                "3    COMP1002 Fundamentals ... Laboratory Tuesday  14:00 - 16:00 Info Sci & Tech, ...\n" +
+                "_________________________________________\n" +
+                "Enter class IDs to add to timetable (comma-separated):\n" +
+                "Example: 1,3,5\n" +
+                "IDs: _________________________________________\n" +
+                "TIMETABLE VALIDATION\n" +
+                "_________________________________________\n" +
+                "✓ No time clashes detected.\n" +
+                "✓ All campus gap requirements met.\n" +
+                "_________________________________________\n" +
+                "Timetable created successfully!\n" +
+                "Timetable ID: 1\n" +
+                "Classes added: 1\n" +
+                "_________________________________________\n\n" +
+                "Enter Command: _________________________________________\n" +
+                "SEARCH TIMETABLES\n" +
+                "_________________________________________\n" +
+                "Leave fields blank to skip filtering.\n" +
+                "_________________________________________\n" +
+                "Timetable ID: Class ID included: Topic (partial match): Day (exact match): _________________________________________\n" +
+                "MATCHING TIMETABLES\n" +
+                "_________________________________________\n" +
+                "ID     Classes    Class IDs                     \n" +
+                "_________________________________________\n" +
+                "1      1          1                             \n" +
+                "_________________________________________\n" +
+                "Total matches: 1\n" +
+                "_________________________________________\n";
+
+        importCorrectMethod();
+
+
+        UserInputHandler.main(null);
+
+        //You have to do it like this otherwise JUnit kills you slow!
+        assertEquals(
+                expectedOutput.replace("\r\n", "\n"),
+                captureOutputStream.toString().replace("\r\n", "\n")
+        );
+    }
+
+    @Tag("Zachary")
+    @Tag("Core")
+    @DisplayName("11.6 Search timetable by day filter")
+    @Test
+    void SearchTimetableWithDayFilter(){
+        String input =
+                "generatetimetable" + System.lineSeparator() +
+                        "1" + System.lineSeparator() + //generate table
+                        "searchtimetables" + System.lineSeparator() +
+                        "" + System.lineSeparator() + //Filter
+                        "" + System.lineSeparator() + //Filter
+                        "" + System.lineSeparator() + //Filter
+                        "Wednesday" + System.lineSeparator(); //Filter
+        ByteArrayInputStream captureInputStream = new ByteArrayInputStream(input.getBytes());
+
+        System.setIn(captureInputStream);
+
+        String expectedOutput = "_________________________________________\n" +
+                "Import completed successfully.\n" +
+                "New records imported: 3\n" +
+                "Existing records updated: 0\n" +
+                "Total class records stored: 3\n" +
+                "_________________________________________\n" +
+                PURPLE + "  _______ _                _        _     _         _____ _      _____\n" +
+                " |__   __(_)              | |      | |   | |       / ____| |    |_   _|\n" +
+                "    | |   _ _ __ ___   ___| |_ __ _| |__ | | ___  | |    | |      | |\n" +
+                "    | |  | | '_ ` _ \\ / _ \\ __/ _` | '_ \\| |/ _ \\ | |    | |      | |\n" +
+                "    | |  | | | | | | |  __/ || (_| | |_) | |  __/ | |____| |____ _| |_\n" +
+                "    |_|  |_|_| |_| |_|\\___|\\__\\__,_|_.__/|_|\\___|  \\_____|______|_____|\n" +
+                RESET + System.lineSeparator() +
+                CYAN + "        TIMETABLE OPTIMISATION CLI" + RESET + System.lineSeparator() +
+                "\n" +
+                GREEN + "Commands:" + RESET + System.lineSeparator() +
+                "  help              - Show all commands\n" +
+                "  help <command>    - Command details\n" +
+                "  exit              - Quit program\n" +
+                "\n" +
+                YELLOW + "Type a command and press Enter" + RESET + System.lineSeparator() +
+                "\n" +
+                "\n" +
+                "Enter Command: _________________________________________\n" +
+                "GENERATE TIMETABLE\n" +
+                "_________________________________________\n" +
+                "View and select classes to add to your timetable.\n" +
+                "_________________________________________\n" +
+                "ID   Topic                     Format     Day      Time       Location            \n" +
+                "_________________________________________\n" +
+                "1    COMP1002 Fundamentals ... Laboratory Wednesday 14:00 - 16:00 Info Sci & Tech, ...\n" +
+                "2    COMP1002 Fundamentals ... Laboratory Wednesday 14:00 - 16:00 Info Sci & Tech, ...\n" +
+                "3    COMP1002 Fundamentals ... Laboratory Tuesday  14:00 - 16:00 Info Sci & Tech, ...\n" +
+                "_________________________________________\n" +
+                "Enter class IDs to add to timetable (comma-separated):\n" +
+                "Example: 1,3,5\n" +
+                "IDs: _________________________________________\n" +
+                "TIMETABLE VALIDATION\n" +
+                "_________________________________________\n" +
+                "✓ No time clashes detected.\n" +
+                "✓ All campus gap requirements met.\n" +
+                "_________________________________________\n" +
+                "Timetable created successfully!\n" +
+                "Timetable ID: 1\n" +
+                "Classes added: 1\n" +
+                "_________________________________________\n\n" +
+                "Enter Command: _________________________________________\n" +
+                "SEARCH TIMETABLES\n" +
+                "_________________________________________\n" +
+                "Leave fields blank to skip filtering.\n" +
+                "_________________________________________\n" +
+                "Timetable ID: Class ID included: Topic (partial match): Day (exact match): _________________________________________\n" +
+                "MATCHING TIMETABLES\n" +
+                "_________________________________________\n" +
+                "ID     Classes    Class IDs                     \n" +
+                "_________________________________________\n" +
+                "1      1          1                             \n" +
+                "_________________________________________\n" +
+                "Total matches: 1\n" +
+                "_________________________________________\n";
+
+        importCorrectMethod();
+
+
+        UserInputHandler.main(null);
+
+        //You have to do it like this otherwise JUnit kills you slow!
+        assertEquals(
+                expectedOutput.replace("\r\n", "\n"),
+                captureOutputStream.toString().replace("\r\n", "\n")
+        );
+    }
+
+    @Tag("Zachary")
+    @Tag("Core")
+    @DisplayName("11.7 Search timetable with multiple filters combined")
+    @Test
+    void SearchTimetableWithMultipleFilters(){
+        String input =
+                "generatetimetable" + System.lineSeparator() +
+                        "1,3" + System.lineSeparator() + //generate table
+                        "searchtimetables" + System.lineSeparator() +
+                        "" + System.lineSeparator() + //Filter
+                        "1" + System.lineSeparator() + //Filter
+                        "COMP" + System.lineSeparator() + //Filter
+                        "Wednesday" + System.lineSeparator(); //Filter
+        ByteArrayInputStream captureInputStream = new ByteArrayInputStream(input.getBytes());
+
+        System.setIn(captureInputStream);
+
+        String expectedOutput = "_________________________________________\n" +
+                "Import completed successfully.\n" +
+                "New records imported: 3\n" +
+                "Existing records updated: 0\n" +
+                "Total class records stored: 3\n" +
+                "_________________________________________\n" +
+                PURPLE + "  _______ _                _        _     _         _____ _      _____\n" +
+                " |__   __(_)              | |      | |   | |       / ____| |    |_   _|\n" +
+                "    | |   _ _ __ ___   ___| |_ __ _| |__ | | ___  | |    | |      | |\n" +
+                "    | |  | | '_ ` _ \\ / _ \\ __/ _` | '_ \\| |/ _ \\ | |    | |      | |\n" +
+                "    | |  | | | | | | |  __/ || (_| | |_) | |  __/ | |____| |____ _| |_\n" +
+                "    |_|  |_|_| |_| |_|\\___|\\__\\__,_|_.__/|_|\\___|  \\_____|______|_____|\n" +
+                RESET + System.lineSeparator() +
+                CYAN + "        TIMETABLE OPTIMISATION CLI" + RESET + System.lineSeparator() +
+                "\n" +
+                GREEN + "Commands:" + RESET + System.lineSeparator() +
+                "  help              - Show all commands\n" +
+                "  help <command>    - Command details\n" +
+                "  exit              - Quit program\n" +
+                "\n" +
+                YELLOW + "Type a command and press Enter" + RESET + System.lineSeparator() +
+                "\n" +
+                "\n" +
+                "Enter Command: _________________________________________\n" +
+                "GENERATE TIMETABLE\n" +
+                "_________________________________________\n" +
+                "View and select classes to add to your timetable.\n" +
+                "_________________________________________\n" +
+                "ID   Topic                     Format     Day      Time       Location            \n" +
+                "_________________________________________\n" +
+                "1    COMP1002 Fundamentals ... Laboratory Wednesday 14:00 - 16:00 Info Sci & Tech, ...\n" +
+                "2    COMP1002 Fundamentals ... Laboratory Wednesday 14:00 - 16:00 Info Sci & Tech, ...\n" +
+                "3    COMP1002 Fundamentals ... Laboratory Tuesday  14:00 - 16:00 Info Sci & Tech, ...\n" +
+                "_________________________________________\n" +
+                "Enter class IDs to add to timetable (comma-separated):\n" +
+                "Example: 1,3,5\n" +
+                "IDs: _________________________________________\n" +
+                "TIMETABLE VALIDATION\n" +
+                "_________________________________________\n" +
+                "✓ No time clashes detected.\n" +
+                "✓ All campus gap requirements met.\n" +
+                "_________________________________________\n" +
+                "Timetable created successfully!\n" +
+                "Timetable ID: 1\n" +
+                "Classes added: 2\n" +
+                "_________________________________________\n\n" +
+                "Enter Command: _________________________________________\n" +
+                "SEARCH TIMETABLES\n" +
+                "_________________________________________\n" +
+                "Leave fields blank to skip filtering.\n" +
+                "_________________________________________\n" +
+                "Timetable ID: Class ID included: Topic (partial match): Day (exact match): _________________________________________\n" +
+                "MATCHING TIMETABLES\n" +
+                "_________________________________________\n" +
+                "ID     Classes    Class IDs                     \n" +
+                "_________________________________________\n" +
+                "1      2          1, 3                          \n" +
+                "_________________________________________\n" +
+                "Total matches: 1\n" +
+                "_________________________________________\n";
+
+        importCorrectMethod();
+
+
+        UserInputHandler.main(null);
+
+        //You have to do it like this otherwise JUnit kills you slow!
+        assertEquals(
+                expectedOutput.replace("\r\n", "\n"),
+                captureOutputStream.toString().replace("\r\n", "\n")
+        );
+    }
+
+    @Tag("Zachary")
+    @Tag("Additional")
+    @DisplayName("11.8 Search timetable returns correct timetable class counts")
+    @Test
+    void SearchTimetableReturnTimetableClassCounts(){
+        String input =
+                "generatetimetable" + System.lineSeparator() +
+                        "1,3" + System.lineSeparator() + //generate table
+                        "searchtimetables" + System.lineSeparator() +
+                        "" + System.lineSeparator() + //Filter
+                        "" + System.lineSeparator() + //Filter
+                        "" + System.lineSeparator() + //Filter
+                        "" + System.lineSeparator(); //Filter
+        ByteArrayInputStream captureInputStream = new ByteArrayInputStream(input.getBytes());
+
+        System.setIn(captureInputStream);
+
+        String expectedOutput = "_________________________________________\n" +
+                "Import completed successfully.\n" +
+                "New records imported: 3\n" +
+                "Existing records updated: 0\n" +
+                "Total class records stored: 3\n" +
+                "_________________________________________\n" +
+                PURPLE + "  _______ _                _        _     _         _____ _      _____\n" +
+                " |__   __(_)              | |      | |   | |       / ____| |    |_   _|\n" +
+                "    | |   _ _ __ ___   ___| |_ __ _| |__ | | ___  | |    | |      | |\n" +
+                "    | |  | | '_ ` _ \\ / _ \\ __/ _` | '_ \\| |/ _ \\ | |    | |      | |\n" +
+                "    | |  | | | | | | |  __/ || (_| | |_) | |  __/ | |____| |____ _| |_\n" +
+                "    |_|  |_|_| |_| |_|\\___|\\__\\__,_|_.__/|_|\\___|  \\_____|______|_____|\n" +
+                RESET + System.lineSeparator() +
+                CYAN + "        TIMETABLE OPTIMISATION CLI" + RESET + System.lineSeparator() +
+                "\n" +
+                GREEN + "Commands:" + RESET + System.lineSeparator() +
+                "  help              - Show all commands\n" +
+                "  help <command>    - Command details\n" +
+                "  exit              - Quit program\n" +
+                "\n" +
+                YELLOW + "Type a command and press Enter" + RESET + System.lineSeparator() +
+                "\n" +
+                "\n" +
+                "Enter Command: _________________________________________\n" +
+                "GENERATE TIMETABLE\n" +
+                "_________________________________________\n" +
+                "View and select classes to add to your timetable.\n" +
+                "_________________________________________\n" +
+                "ID   Topic                     Format     Day      Time       Location            \n" +
+                "_________________________________________\n" +
+                "1    COMP1002 Fundamentals ... Laboratory Wednesday 14:00 - 16:00 Info Sci & Tech, ...\n" +
+                "2    COMP1002 Fundamentals ... Laboratory Wednesday 14:00 - 16:00 Info Sci & Tech, ...\n" +
+                "3    COMP1002 Fundamentals ... Laboratory Tuesday  14:00 - 16:00 Info Sci & Tech, ...\n" +
+                "_________________________________________\n" +
+                "Enter class IDs to add to timetable (comma-separated):\n" +
+                "Example: 1,3,5\n" +
+                "IDs: _________________________________________\n" +
+                "TIMETABLE VALIDATION\n" +
+                "_________________________________________\n" +
+                "✓ No time clashes detected.\n" +
+                "✓ All campus gap requirements met.\n" +
+                "_________________________________________\n" +
+                "Timetable created successfully!\n" +
+                "Timetable ID: 1\n" +
+                "Classes added: 2\n" +
+                "_________________________________________\n\n" +
+                "Enter Command: _________________________________________\n" +
+                "SEARCH TIMETABLES\n" +
+                "_________________________________________\n" +
+                "Leave fields blank to skip filtering.\n" +
+                "_________________________________________\n" +
+                "Timetable ID: Class ID included: Topic (partial match): Day (exact match): _________________________________________\n" +
+                "MATCHING TIMETABLES\n" +
+                "_________________________________________\n" +
+                "ID     Classes    Class IDs                     \n" +
+                "_________________________________________\n" +
+                "1      2          1, 3                          \n" +
+                "_________________________________________\n" +
+                "Total matches: 1\n" +
+                "_________________________________________\n";
+
+        importCorrectMethod();
+
+
+        UserInputHandler.main(null);
+
+        //You have to do it like this otherwise JUnit kills you slow!
+        assertEquals(
+                expectedOutput.replace("\r\n", "\n"),
+                captureOutputStream.toString().replace("\r\n", "\n")
+        );
+    }
+
+    @Tag("Zachary")
+    @Tag("Core")
+    @DisplayName("11.9 Search timetable returns no results for non-matching filters")
+    @Test
+    void SearchTimetableWithMultipleFiltersNoResults(){
+        String input =
+                "generatetimetable" + System.lineSeparator() +
+                        "1,3" + System.lineSeparator() + //generate table
+                        "searchtimetables" + System.lineSeparator() +
+                        "" + System.lineSeparator() + //Filter
+                        "2" + System.lineSeparator() + //Filter
+                        "" + System.lineSeparator() + //Filter
+                        "" + System.lineSeparator(); //Filter
+        ByteArrayInputStream captureInputStream = new ByteArrayInputStream(input.getBytes());
+
+        System.setIn(captureInputStream);
+
+        String expectedOutput = "_________________________________________\n" +
+                "Import completed successfully.\n" +
+                "New records imported: 3\n" +
+                "Existing records updated: 0\n" +
+                "Total class records stored: 3\n" +
+                "_________________________________________\n" +
+                PURPLE + "  _______ _                _        _     _         _____ _      _____\n" +
+                " |__   __(_)              | |      | |   | |       / ____| |    |_   _|\n" +
+                "    | |   _ _ __ ___   ___| |_ __ _| |__ | | ___  | |    | |      | |\n" +
+                "    | |  | | '_ ` _ \\ / _ \\ __/ _` | '_ \\| |/ _ \\ | |    | |      | |\n" +
+                "    | |  | | | | | | |  __/ || (_| | |_) | |  __/ | |____| |____ _| |_\n" +
+                "    |_|  |_|_| |_| |_|\\___|\\__\\__,_|_.__/|_|\\___|  \\_____|______|_____|\n" +
+                RESET + System.lineSeparator() +
+                CYAN + "        TIMETABLE OPTIMISATION CLI" + RESET + System.lineSeparator() +
+                "\n" +
+                GREEN + "Commands:" + RESET + System.lineSeparator() +
+                "  help              - Show all commands\n" +
+                "  help <command>    - Command details\n" +
+                "  exit              - Quit program\n" +
+                "\n" +
+                YELLOW + "Type a command and press Enter" + RESET + System.lineSeparator() +
+                "\n" +
+                "\n" +
+                "Enter Command: _________________________________________\n" +
+                "GENERATE TIMETABLE\n" +
+                "_________________________________________\n" +
+                "View and select classes to add to your timetable.\n" +
+                "_________________________________________\n" +
+                "ID   Topic                     Format     Day      Time       Location            \n" +
+                "_________________________________________\n" +
+                "1    COMP1002 Fundamentals ... Laboratory Wednesday 14:00 - 16:00 Info Sci & Tech, ...\n" +
+                "2    COMP1002 Fundamentals ... Laboratory Wednesday 14:00 - 16:00 Info Sci & Tech, ...\n" +
+                "3    COMP1002 Fundamentals ... Laboratory Tuesday  14:00 - 16:00 Info Sci & Tech, ...\n" +
+                "_________________________________________\n" +
+                "Enter class IDs to add to timetable (comma-separated):\n" +
+                "Example: 1,3,5\n" +
+                "IDs: _________________________________________\n" +
+                "TIMETABLE VALIDATION\n" +
+                "_________________________________________\n" +
+                "✓ No time clashes detected.\n" +
+                "✓ All campus gap requirements met.\n" +
+                "_________________________________________\n" +
+                "Timetable created successfully!\n" +
+                "Timetable ID: 1\n" +
+                "Classes added: 2\n" +
+                "_________________________________________\n\n" +
+                "Enter Command: _________________________________________\n" +
+                "SEARCH TIMETABLES\n" +
+                "_________________________________________\n" +
+                "Leave fields blank to skip filtering.\n" +
+                "_________________________________________\n" +
+                "Timetable ID: Class ID included: Topic (partial match): Day (exact match): _________________________________________\n" +
+                "No timetables matched your search criteria.\n" +
+                "_________________________________________\n";
+
+        importCorrectMethod();
+
+
+        UserInputHandler.main(null);
+
+        //You have to do it like this otherwise JUnit kills you slow!
+        assertEquals(
+                expectedOutput.replace("\r\n", "\n"),
+                captureOutputStream.toString().replace("\r\n", "\n")
+        );
+    }
 
     // 12
 
     // 13
 
     // 14
+    @Tag("Zachary")
+    @Tag("Core")
+    @DisplayName("14.1 Call function with no existing timetables")
+    @Test
+    void ExportNoTimetables(){
+        String input = "exporttimetables";
+        ByteArrayInputStream captureInputStream = new ByteArrayInputStream(input.getBytes());
+
+        System.setIn(captureInputStream);
+
+        String expectedOutput = "_________________________________________\n" +
+                "Import completed successfully.\n" +
+                "New records imported: 3\n" +
+                "Existing records updated: 0\n" +
+                "Total class records stored: 3\n" +
+                "_________________________________________\n" +
+                PURPLE + "  _______ _                _        _     _         _____ _      _____\n" +
+                " |__   __(_)              | |      | |   | |       / ____| |    |_   _|\n" +
+                "    | |   _ _ __ ___   ___| |_ __ _| |__ | | ___  | |    | |      | |\n" +
+                "    | |  | | '_ ` _ \\ / _ \\ __/ _` | '_ \\| |/ _ \\ | |    | |      | |\n" +
+                "    | |  | | | | | | |  __/ || (_| | |_) | |  __/ | |____| |____ _| |_\n" +
+                "    |_|  |_|_| |_| |_|\\___|\\__\\__,_|_.__/|_|\\___|  \\_____|______|_____|\n" +
+                RESET + System.lineSeparator() +
+                CYAN + "        TIMETABLE OPTIMISATION CLI" + RESET + System.lineSeparator() +
+                "\n" +
+                GREEN + "Commands:" + RESET + System.lineSeparator() +
+                "  help              - Show all commands\n" +
+                "  help <command>    - Command details\n" +
+                "  exit              - Quit program\n" +
+                "\n" +
+                YELLOW + "Type a command and press Enter" + RESET + System.lineSeparator() +
+                "\n" +
+                "\n" +
+                "Enter Command: No timetables have been generated yet.\n";
+
+        importIncorrectMethod();
+
+        UserInputHandler.main(null);
+
+        //You have to do it like this otherwise JUnit kills you slow!
+        assertEquals(
+                expectedOutput.replace("\r\n", "\n"),
+                captureOutputStream.toString().replace("\r\n", "\n")
+        );
+    }
+
+    @Tag("Zachary")
+    @Tag("Core")
+    @DisplayName("14.2 Enter an incorrect id")
+    @Test
+    void ExportIncorrectID(){
+        String input =
+                "generatetimetable" + System.lineSeparator() +
+                        "1" + System.lineSeparator() + //generate table
+                        "exporttimetables" + System.lineSeparator() +
+                        "2" + System.lineSeparator(); //ID
+        ByteArrayInputStream captureInputStream = new ByteArrayInputStream(input.getBytes());
+
+        System.setIn(captureInputStream);
+
+        String expectedOutput = "_________________________________________\n" +
+                "Import completed successfully.\n" +
+                "New records imported: 3\n" +
+                "Existing records updated: 0\n" +
+                "Total class records stored: 3\n" +
+                "_________________________________________\n" +
+                PURPLE + "  _______ _                _        _     _         _____ _      _____\n" +
+                " |__   __(_)              | |      | |   | |       / ____| |    |_   _|\n" +
+                "    | |   _ _ __ ___   ___| |_ __ _| |__ | | ___  | |    | |      | |\n" +
+                "    | |  | | '_ ` _ \\ / _ \\ __/ _` | '_ \\| |/ _ \\ | |    | |      | |\n" +
+                "    | |  | | | | | | |  __/ || (_| | |_) | |  __/ | |____| |____ _| |_\n" +
+                "    |_|  |_|_| |_| |_|\\___|\\__\\__,_|_.__/|_|\\___|  \\_____|______|_____|\n" +
+                RESET + System.lineSeparator() +
+                CYAN + "        TIMETABLE OPTIMISATION CLI" + RESET + System.lineSeparator() +
+                "\n" +
+                GREEN + "Commands:" + RESET + System.lineSeparator() +
+                "  help              - Show all commands\n" +
+                "  help <command>    - Command details\n" +
+                "  exit              - Quit program\n" +
+                "\n" +
+                YELLOW + "Type a command and press Enter" + RESET + System.lineSeparator() +
+                "\n" +
+                "\n" +
+                "Enter Command: _________________________________________\n" +
+                "GENERATE TIMETABLE\n" +
+                "_________________________________________\n" +
+                "View and select classes to add to your timetable.\n" +
+                "_________________________________________\n" +
+                "ID   Topic                     Format     Day      Time       Location            \n" +
+                "_________________________________________\n" +
+                "1    COMP1002 Fundamentals ... Laboratory Wednesday 14:00 - 16:00 Info Sci & Tech, ...\n" +
+                "2    COMP1002 Fundamentals ... Laboratory Wednesday 14:00 - 16:00 Info Sci & Tech, ...\n" +
+                "3    COMP1002 Fundamentals ... Laboratory Tuesday  14:00 - 16:00 Info Sci & Tech, ...\n" +
+                "_________________________________________\n" +
+                "Enter class IDs to add to timetable (comma-separated):\n" +
+                "Example: 1,3,5\n" +
+                "IDs: _________________________________________\n" +
+                "TIMETABLE VALIDATION\n" +
+                "_________________________________________\n" +
+                "✓ No time clashes detected.\n" +
+                "✓ All campus gap requirements met.\n" +
+                "_________________________________________\n" +
+                "Timetable created successfully!\n" +
+                "Timetable ID: 1\n" +
+                "Classes added: 1\n" +
+                "_________________________________________\n\n" +
+                "Enter Command: _________________________________________\n" +
+                "EXPORT TIMETABLE\n" +
+                "_________________________________________\n" +
+                "ID     Classes    Class IDs                     \n" +
+                "_________________________________________\n" +
+                "1      1          1                             \n" +
+                "_________________________________________\n" +
+                "Enter timetable ID to export: Error: Timetable not found.\n" +
+                "_________________________________________\n";
+
+        importCorrectMethod();
+
+
+        UserInputHandler.main(null);
+
+        //You have to do it like this otherwise JUnit kills you slow!
+        assertEquals(
+                expectedOutput.replace("\r\n", "\n"),
+                captureOutputStream.toString().replace("\r\n", "\n")
+        );
+    }
+
+    @Tag("Zachary")
+    @Tag("Critical")
+    @DisplayName("14.3 Enter no file name")
+    @Test
+    void ExportNoName(){
+        String input =
+                "generatetimetable" + System.lineSeparator() +
+                        "1" + System.lineSeparator() + //generate table
+                        "exporttimetables" + System.lineSeparator() +
+                        "1" + System.lineSeparator() + //ID
+                        "" + System.lineSeparator(); //NAME
+        ByteArrayInputStream captureInputStream = new ByteArrayInputStream(input.getBytes());
+
+        System.setIn(captureInputStream);
+
+        String expectedOutput = "_________________________________________\n" +
+                "Import completed successfully.\n" +
+                "New records imported: 3\n" +
+                "Existing records updated: 0\n" +
+                "Total class records stored: 3\n" +
+                "_________________________________________\n" +
+                PURPLE + "  _______ _                _        _     _         _____ _      _____\n" +
+                " |__   __(_)              | |      | |   | |       / ____| |    |_   _|\n" +
+                "    | |   _ _ __ ___   ___| |_ __ _| |__ | | ___  | |    | |      | |\n" +
+                "    | |  | | '_ ` _ \\ / _ \\ __/ _` | '_ \\| |/ _ \\ | |    | |      | |\n" +
+                "    | |  | | | | | | |  __/ || (_| | |_) | |  __/ | |____| |____ _| |_\n" +
+                "    |_|  |_|_| |_| |_|\\___|\\__\\__,_|_.__/|_|\\___|  \\_____|______|_____|\n" +
+                RESET + System.lineSeparator() +
+                CYAN + "        TIMETABLE OPTIMISATION CLI" + RESET + System.lineSeparator() +
+                "\n" +
+                GREEN + "Commands:" + RESET + System.lineSeparator() +
+                "  help              - Show all commands\n" +
+                "  help <command>    - Command details\n" +
+                "  exit              - Quit program\n" +
+                "\n" +
+                YELLOW + "Type a command and press Enter" + RESET + System.lineSeparator() +
+                "\n" +
+                "\n" +
+                "Enter Command: _________________________________________\n" +
+                "GENERATE TIMETABLE\n" +
+                "_________________________________________\n" +
+                "View and select classes to add to your timetable.\n" +
+                "_________________________________________\n" +
+                "ID   Topic                     Format     Day      Time       Location            \n" +
+                "_________________________________________\n" +
+                "1    COMP1002 Fundamentals ... Laboratory Wednesday 14:00 - 16:00 Info Sci & Tech, ...\n" +
+                "2    COMP1002 Fundamentals ... Laboratory Wednesday 14:00 - 16:00 Info Sci & Tech, ...\n" +
+                "3    COMP1002 Fundamentals ... Laboratory Tuesday  14:00 - 16:00 Info Sci & Tech, ...\n" +
+                "_________________________________________\n" +
+                "Enter class IDs to add to timetable (comma-separated):\n" +
+                "Example: 1,3,5\n" +
+                "IDs: _________________________________________\n" +
+                "TIMETABLE VALIDATION\n" +
+                "_________________________________________\n" +
+                "✓ No time clashes detected.\n" +
+                "✓ All campus gap requirements met.\n" +
+                "_________________________________________\n" +
+                "Timetable created successfully!\n" +
+                "Timetable ID: 1\n" +
+                "Classes added: 1\n" +
+                "_________________________________________\n\n" +
+                "Enter Command: _________________________________________\n" +
+                "EXPORT TIMETABLE\n" +
+                "_________________________________________\n" +
+                "ID     Classes    Class IDs                     \n" +
+                "_________________________________________\n" +
+                "1      1          1                             \n" +
+                "_________________________________________\n" +
+                "Enter timetable ID to export: Enter export file name (without .csv): Error: File name cannot be empty.\n";
+
+        importCorrectMethod();
+
+
+        UserInputHandler.main(null);
+
+        //You have to do it like this otherwise JUnit kills you slow!
+        assertEquals(
+                expectedOutput.replace("\r\n", "\n"),
+                captureOutputStream.toString().replace("\r\n", "\n")
+        );
+    }
+
+    @Tag("Zachary")
+    @Tag("Core")
+    @DisplayName("14.4 Enter an invalid file name (< > : \" / \\ | ? *)")
+    @Test
+    void ExportInvalidName(){
+        String input =
+                "generatetimetable" + System.lineSeparator() +
+                        "1" + System.lineSeparator() + //generate table
+                        "exporttimetables" + System.lineSeparator() +
+                        "1" + System.lineSeparator() + //ID
+                        "< > : \" / \\ | ? *)" + System.lineSeparator(); //NAME
+        ByteArrayInputStream captureInputStream = new ByteArrayInputStream(input.getBytes());
+
+        System.setIn(captureInputStream);
+
+        String expectedOutput = "_________________________________________\n" +
+                "Import completed successfully.\n" +
+                "New records imported: 3\n" +
+                "Existing records updated: 0\n" +
+                "Total class records stored: 3\n" +
+                "_________________________________________\n" +
+                PURPLE + "  _______ _                _        _     _         _____ _      _____\n" +
+                " |__   __(_)              | |      | |   | |       / ____| |    |_   _|\n" +
+                "    | |   _ _ __ ___   ___| |_ __ _| |__ | | ___  | |    | |      | |\n" +
+                "    | |  | | '_ ` _ \\ / _ \\ __/ _` | '_ \\| |/ _ \\ | |    | |      | |\n" +
+                "    | |  | | | | | | |  __/ || (_| | |_) | |  __/ | |____| |____ _| |_\n" +
+                "    |_|  |_|_| |_| |_|\\___|\\__\\__,_|_.__/|_|\\___|  \\_____|______|_____|\n" +
+                RESET + System.lineSeparator() +
+                CYAN + "        TIMETABLE OPTIMISATION CLI" + RESET + System.lineSeparator() +
+                "\n" +
+                GREEN + "Commands:" + RESET + System.lineSeparator() +
+                "  help              - Show all commands\n" +
+                "  help <command>    - Command details\n" +
+                "  exit              - Quit program\n" +
+                "\n" +
+                YELLOW + "Type a command and press Enter" + RESET + System.lineSeparator() +
+                "\n" +
+                "\n" +
+                "Enter Command: _________________________________________\n" +
+                "GENERATE TIMETABLE\n" +
+                "_________________________________________\n" +
+                "View and select classes to add to your timetable.\n" +
+                "_________________________________________\n" +
+                "ID   Topic                     Format     Day      Time       Location            \n" +
+                "_________________________________________\n" +
+                "1    COMP1002 Fundamentals ... Laboratory Wednesday 14:00 - 16:00 Info Sci & Tech, ...\n" +
+                "2    COMP1002 Fundamentals ... Laboratory Wednesday 14:00 - 16:00 Info Sci & Tech, ...\n" +
+                "3    COMP1002 Fundamentals ... Laboratory Tuesday  14:00 - 16:00 Info Sci & Tech, ...\n" +
+                "_________________________________________\n" +
+                "Enter class IDs to add to timetable (comma-separated):\n" +
+                "Example: 1,3,5\n" +
+                "IDs: _________________________________________\n" +
+                "TIMETABLE VALIDATION\n" +
+                "_________________________________________\n" +
+                "✓ No time clashes detected.\n" +
+                "✓ All campus gap requirements met.\n" +
+                "_________________________________________\n" +
+                "Timetable created successfully!\n" +
+                "Timetable ID: 1\n" +
+                "Classes added: 1\n" +
+                "_________________________________________\n\n" +
+                "Enter Command: _________________________________________\n" +
+                "EXPORT TIMETABLE\n" +
+                "_________________________________________\n" +
+                "ID     Classes    Class IDs                     \n" +
+                "_________________________________________\n" +
+                "1      1          1                             \n" +
+                "_________________________________________\n" +
+                "Enter timetable ID to export: Enter export file name (without .csv): Error: Failed to export timetable.\n" +
+                "Check file permissions and try again.\n" +
+                "_________________________________________\n";
+
+        importCorrectMethod();
+
+
+        UserInputHandler.main(null);
+
+        //You have to do it like this otherwise JUnit kills you slow!
+        assertEquals(
+                expectedOutput.replace("\r\n", "\n"),
+                captureOutputStream.toString().replace("\r\n", "\n")
+        );
+    }
+
+    @Tag("Zachary")
+    @Tag("Critical")
+    @DisplayName("14.5 Call function with existing timetables entering a valid timetable id and filename")
+    @Test
+    void ExportExistingTimetabe(){
+        String input =
+                "generatetimetable" + System.lineSeparator() +
+                        "1" + System.lineSeparator() + //generate table
+                        "exporttimetables" + System.lineSeparator() +
+                        "1" + System.lineSeparator() + //ID
+                        "Test" + System.lineSeparator(); //NAME
+        ByteArrayInputStream captureInputStream = new ByteArrayInputStream(input.getBytes());
+
+        System.setIn(captureInputStream);
+
+        String expectedOutput = "_________________________________________\n" +
+                "Import completed successfully.\n" +
+                "New records imported: 3\n" +
+                "Existing records updated: 0\n" +
+                "Total class records stored: 3\n" +
+                "_________________________________________\n" +
+                PURPLE + "  _______ _                _        _     _         _____ _      _____\n" +
+                " |__   __(_)              | |      | |   | |       / ____| |    |_   _|\n" +
+                "    | |   _ _ __ ___   ___| |_ __ _| |__ | | ___  | |    | |      | |\n" +
+                "    | |  | | '_ ` _ \\ / _ \\ __/ _` | '_ \\| |/ _ \\ | |    | |      | |\n" +
+                "    | |  | | | | | | |  __/ || (_| | |_) | |  __/ | |____| |____ _| |_\n" +
+                "    |_|  |_|_| |_| |_|\\___|\\__\\__,_|_.__/|_|\\___|  \\_____|______|_____|\n" +
+                RESET + System.lineSeparator() +
+                CYAN + "        TIMETABLE OPTIMISATION CLI" + RESET + System.lineSeparator() +
+                "\n" +
+                GREEN + "Commands:" + RESET + System.lineSeparator() +
+                "  help              - Show all commands\n" +
+                "  help <command>    - Command details\n" +
+                "  exit              - Quit program\n" +
+                "\n" +
+                YELLOW + "Type a command and press Enter" + RESET + System.lineSeparator() +
+                "\n" +
+                "\n" +
+                "Enter Command: _________________________________________\n" +
+                "GENERATE TIMETABLE\n" +
+                "_________________________________________\n" +
+                "View and select classes to add to your timetable.\n" +
+                "_________________________________________\n" +
+                "ID   Topic                     Format     Day      Time       Location            \n" +
+                "_________________________________________\n" +
+                "1    COMP1002 Fundamentals ... Laboratory Wednesday 14:00 - 16:00 Info Sci & Tech, ...\n" +
+                "2    COMP1002 Fundamentals ... Laboratory Wednesday 14:00 - 16:00 Info Sci & Tech, ...\n" +
+                "3    COMP1002 Fundamentals ... Laboratory Tuesday  14:00 - 16:00 Info Sci & Tech, ...\n" +
+                "_________________________________________\n" +
+                "Enter class IDs to add to timetable (comma-separated):\n" +
+                "Example: 1,3,5\n" +
+                "IDs: _________________________________________\n" +
+                "TIMETABLE VALIDATION\n" +
+                "_________________________________________\n" +
+                "✓ No time clashes detected.\n" +
+                "✓ All campus gap requirements met.\n" +
+                "_________________________________________\n" +
+                "Timetable created successfully!\n" +
+                "Timetable ID: 1\n" +
+                "Classes added: 1\n" +
+                "_________________________________________\n\n" +
+                "Enter Command: _________________________________________\n" +
+                "EXPORT TIMETABLE\n" +
+                "_________________________________________\n" +
+                "ID     Classes    Class IDs                     \n" +
+                "_________________________________________\n" +
+                "1      1          1                             \n" +
+                "_________________________________________\n" +
+                "Enter timetable ID to export: Enter export file name (without .csv): _________________________________________\n" +
+                "Timetable exported successfully!\n" +
+                "Export file: Test.csv\n" +
+                "Classes exported: 1\n" +
+                "_________________________________________\n";
+
+        importCorrectMethod();
+
+
+        UserInputHandler.main(null);
+
+        //You have to do it like this otherwise JUnit kills you slow!
+        assertEquals(
+                expectedOutput.replace("\r\n", "\n"),
+                captureOutputStream.toString().replace("\r\n", "\n")
+        );
+    }
+
 
     // 15
     @Tag("Charlie")
-    @Tag("Critical")
+    @Tag("Core")
     @DisplayName("15.1 Calling help function with no parameters")
     @Test
     void callHelpNoParamTest() {
