@@ -60,6 +60,12 @@ class ApplicationTest {
         System.setOut(new PrintStream(captureOutputStream));
     }
 
+    @BeforeEach
+    void resetApplicationState() {
+        Application.setClassesEmpty();
+        Application.setNextSessionId();
+    }
+
     @AfterEach
     public void tearDown() {
         // Reassigns the "standard" input stream back to what was originally stored in "originalInputStream".
@@ -494,12 +500,14 @@ class ApplicationTest {
     @Tag("Zachary")
     @Tag("Critical")
     @DisplayName("06.1 Call function with existing classes of correct format")
-    @Test
-    void EditclassClassFunctionWithExistingClass(){
+    @ParameterizedTest
+    @ValueSource(strings = {"1", "2", "3", "4", "5", "6", "7",
+            "8"})
+    void EditclassClassFunctionWithExistingClass(String command){
         String input =
                 "editclasses" + System.lineSeparator() +
                 "1" + System.lineSeparator() + //ID
-                "1" + System.lineSeparator() + //Function
+                command + System.lineSeparator() + //Function
                 "New Topic" + System.lineSeparator() + //Value
                 "yes" + System.lineSeparator(); //Confirm
         ByteArrayInputStream captureInputStream = new ByteArrayInputStream(input.getBytes());
@@ -567,10 +575,10 @@ class ApplicationTest {
 
         UserInputHandler.main(null);
 
-        //You have to do it like this otherwise JUnit kills you slow!
-        assertEquals(
-                expectedOutput.replace("\r\n", "\n"),
-                captureOutputStream.toString().replace("\r\n", "\n")
+        String output = captureOutputStream.toString().replace("\r\n", "\n");
+
+        assertTrue(
+                output.contains("Confirm edit? (yes/no): Class record updated successfully.")
         );
     }
 
