@@ -1872,6 +1872,7 @@ public class Application {
 
     public static void setClassesEmpty() {
         classes.removeAll(classes);
+        timetables.removeAll(timetables);
     }
     public static void setNextSessionId() {
         nextSessionId = 1;
